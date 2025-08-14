@@ -1,40 +1,24 @@
-import { useState } from 'react';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import ListItem from '@mui/material/ListItem';
-import {Link} from 'react-router-dom';
-import './App.css'
 
-function App() {
-
-  return (
+function Note() {
+      return (
     <>
-      <h1>SUAS NOTAS</h1>
-      <button>Adicionar</button>
-      <br/>
-      <label>Pesquisar nota</label>
-      <br/>
-      <input type="text"></input>
-      <input type="date"></input>
-
       <List>
         <ListItem>
           <ListItemText
             primary="Nota"
             secondary= 'Descrição'
           />
-        </ListItem>,
+        </ListItem>
          <ListItemButton>
             <ListItemText primary="Ver mais" />
          </ListItemButton>
       </List>
-
-      <Link to="/nota">Nota</Link>
-
-      <br/>
     </>
   )
 }
 
-export default App
+export default Note;
