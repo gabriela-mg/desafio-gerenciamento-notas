@@ -7,7 +7,7 @@ AppDataSource.initialize().then(async () => {
     const express = require('express');
     const app = express();
     const bodyParser= require('body-parser');
-    //app.use(cors(corsOptions));
+    app.use(cors({origin:'http://localhost:4200', credentials: true}));
 
     app.use(express.json());
 
