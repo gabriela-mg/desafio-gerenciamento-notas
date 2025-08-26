@@ -1,5 +1,6 @@
 {
    "dependencies": {
+      "body-parser": "^2.2.0",
       "express": "^5.1.0",
       "mysql2": "^3.14.0",
       "reflect-metadata": "^0.2.2",
@@ -12,7 +13,10 @@
       "typescript": "^5.8.2"
    },
    "scripts": {
-      "start": "ts-node src/index.ts",
+      "dev":"ts-node app.ts",
+      "build":"tsc",
+      "start": "node back/src/app.ts",
+      "docker:build": "docker compose up",
       "typeorm": "typeorm-ts-node-commonjs"
    }
 }
