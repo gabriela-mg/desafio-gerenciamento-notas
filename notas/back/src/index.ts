@@ -11,7 +11,8 @@ AppDataSource.initialize().then(async () => {
 
     app.use(express.json());
 
-    app.use(express.urlencoded({ extended: true }));    const port = 4200;
+    app.use(express.urlencoded({ extended: true })); 
+    const port = 4200;
 
     app.use('/api', router);
 

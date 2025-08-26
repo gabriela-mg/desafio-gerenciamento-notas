@@ -1,10 +1,9 @@
 import { Router } from 'express';
-import { Note } from '../entity/Note.entity';
 import { NoteRepository } from '../repository/NoteRepository';
 
 const router = Router();
 
-router.get('/notes', async(req, res) => {
+router.get('/', async(req, res) => {
     try {
         const notes = await NoteRepository.find({
             order: {id:'ASC'}
@@ -25,17 +24,17 @@ router.get('/notes', async(req, res) => {
 
 router.post('/note', async(req, res) => {
     try {
-        const notes = await NoteRepository.find({
-            order: {id:'ASC'}
-        });
+        const title = req.body.title; 
+        const description = req.body.description;
+        const note = NoteRepository.create({title, description});
+        const savedNote = await NoteRepository.save(note);
 
         res.json({
             sucess: true,
-            count: notes.length,
-            notes
+            note: savedNote
         });
     } catch(error) {
-        res.status(500).json({
+        res.status(400).json({
             sucess: false,
             error: error.message
         })
