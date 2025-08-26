@@ -3,10 +3,10 @@ import { Note } from "./Note.entity";
 
 @Entity()
 export class Image {
-    @PrimaryGeneratedColumn()
-    id: string;
+    @PrimaryGeneratedColumn({type: "int"})
+    id: number;
 
-    @Column({ nullable: false })
+    @Column({ type: "varchar", length: "150", nullable: false })
     address: string;
 
     @ManyToOne(() => Note, (note) => note.images)

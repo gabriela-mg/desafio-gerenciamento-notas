@@ -22,3 +22,24 @@ router.get('/notes', async(req, res) => {
         })
     }
 })
+
+router.post('/note', async(req, res) => {
+    try {
+        const notes = await NoteRepository.find({
+            order: {id:'ASC'}
+        });
+
+        res.json({
+            sucess: true,
+            count: notes.length,
+            notes
+        });
+    } catch(error) {
+        res.status(500).json({
+            sucess: false,
+            error: error.message
+        })
+    }
+})
+
+export default router;

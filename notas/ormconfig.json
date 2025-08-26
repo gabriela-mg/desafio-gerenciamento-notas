@@ -1,0 +1,12 @@
+{
+    "type":"mysql",
+    "host":"db",
+    "port":"3600",
+    "username":"test",
+    "password":"test",
+    "database":"desafio-notas",
+    "synchronize":"false",
+    "logging":"true",
+    "entities":["back/src/entities/*.ts"],
+    "migrations":["back/src/migrations/*.ts"]
+}

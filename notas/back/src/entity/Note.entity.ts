@@ -3,10 +3,10 @@ import { Image } from "./Image.entity";
 
 @Entity()
 export class Note {
-    @PrimaryGeneratedColumn("uuid")
-    id: string;
+    @PrimaryGeneratedColumn({type:"int"})
+    id: number;
 
-    @Column({ nullable: false })
+    @Column({ type:"varchar", length:"40", nullable: false })
     title: string;
 
     @Column({ nullable: false })

@@ -48,7 +48,8 @@ export class CreateTables implements MigrationInterface {
                     },
                     {
                         name: 'address',
-                        type: 'text',
+                        type: 'varchar',
+                        length: '150',
                         isNullable: false,
                     },     
                     {
