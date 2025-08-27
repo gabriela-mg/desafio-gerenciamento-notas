@@ -1,19 +1,20 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany } from "typeorm"
-import { Image } from "./Image.entity";
+import { Image } from "./Image.entity.ts"
 
 @Entity()
 export class Note {
+
     @PrimaryGeneratedColumn({type:"int"})
-    id: number;
+    id: number
 
-    @Column({ type:"varchar", length:"40", nullable: false })
-    title: string;
+    @Column({type:"varchar", length:"40"})
+    title: string
 
-    @Column({ nullable: false })
-    description: string;
+    @Column({type:"text"})
+    description: string
 
     @CreateDateColumn()
-    createdAt: Date;
+    date: Date
 
     @OneToMany(() => Image, (image) => image.note)
     images: Image[]

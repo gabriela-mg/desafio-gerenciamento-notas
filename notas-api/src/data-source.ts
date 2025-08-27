@@ -1,7 +1,7 @@
 import "reflect-metadata"
 import { DataSource } from "typeorm"
-import { Note } from "./entity/Note.entity"
-import { Image } from "./entity/Image.entity"
+import { Note } from "./database/entity/Note.entity.ts"
+import { Image } from "./database/entity/Image.entity.ts"
 
 export const AppDataSource = new DataSource({
     type: "mysql",
@@ -13,6 +13,6 @@ export const AppDataSource = new DataSource({
     synchronize: true,
     logging: false,
     entities: [Note, Image],
-    migrations: [],
+    migrations: ["./database/migrations/*.ts"],
     subscribers: [],
 })
