@@ -1,6 +1,4 @@
-import { Image } from "../database/entity/Image.entity";
-import { AppDataSource } from "../data-source";
+import { Image } from "../database/entities/Image.entity.ts";
+import AppDataSource from "../database/data-source.ts";
 
-const ImageRespositry = AppDataSource.getRepository(Image)
-
-export default ImageRespositry;
+export const ImageRepository = AppDataSource.getRepository(Image)

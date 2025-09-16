@@ -4,7 +4,7 @@ import { Note } from "./Note.entity.ts"
 @Entity("image")
 export class Image {
 
-    @PrimaryGeneratedColumn({type:"int", })
+    @PrimaryGeneratedColumn({type:"int"})
     id: number
 
     @Column({type:"varchar", length:"50", nullable:false})

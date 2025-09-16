@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany } from "typeorm"
 import { Image } from "./Image.entity.ts"
 
-@Entity()
+@Entity("note")
 export class Note {
 
     @PrimaryGeneratedColumn({type:"int"})

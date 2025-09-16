@@ -1,6 +1,22 @@
-import { Note } from "../database/entity/Note.entity";
-import { AppDataSource } from "../data-source";
+import { DataSource, SelectQueryBuilder } from "typeorm"
 
-const NoteRepository = AppDataSource.getRepository(Note)
+type Note = {
+    title: string,
+    description: string,
+    id: number,
+    date: Date
+}
 
-export default NoteRepository;
+export interface NoteRepository {
+    findNotes(): Promise<Note[]>
+
+    findNoteById(id: number): Promise<Note> 
+
+    createNote(note: Note) : Promise<Note>
+
+    updateNote(id: number, title: string, description: string): Promise<boolean>
+
+    deleteNote(id: number): Promise<boolean>
+
+    findNotesByFilters(text?: string, startDate?: Date, endDate?: Date): Promise<Note[]>
+}
