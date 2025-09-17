@@ -4,6 +4,7 @@ import NoteGetSchema from './noteGetSchema'
 import NoteGetOneSchema from './noteGetOneSchema'
 import NotePostSchema from './notePostSchema'
 import NotePutSchema from './notePutSchema'
+import NoteDeleteSchema from './noteDeleteSchema'
 
 export class NoteValidator {
 
@@ -42,7 +43,6 @@ export class NoteValidator {
     public validadePutNote(req: Request, res: Response, next) {
         try {
             const body = NotePutSchema.parse({id: req.params.id, title: req.body.title, description: req.body.description})
-            console.log(body)
            // req.body = body
             console.log(req.params.id)
             next()
@@ -52,39 +52,12 @@ export class NoteValidator {
         }
     }
 
-    public validadeDeleteNote() {
-        
-    }
-    public validateBody(req: Request, res: Response, next) {
+    public validadeDeleteNote(req: Request, res: Response, next) {
         try {
-            const body = Note.parse({id: null, title: req.body.title, description: req.body.description, text: null, date: null})
-            req.body = body
-                        next()
-
-        } catch(error) {
-            res.sendStatus(400)
-        }
-    }
-
-    public validateParams(req: Request, res: Response, next) {
-        try {
-            Note.parse({id: req.params.id, title: null, description: null, text: null, date: null})
+            const param = NoteDeleteSchema.parse({id: req.params.id})
             next()
         } catch(error) {
             res.sendStatus(400)
-        }
-    }
-
-    public validateQuery(req: Request, res: Response, next) {
-        try {
-            const date = req.query.date===undefined ? null : req.query.date       
-            const text = req.query.text===undefined ? null : req.query.text;
-
-            Note.parse({id: null, title: null, description: null, text: text, date: date})
-            next()
-        } catch(error) {
-            res.sendStatus(400)
-
         }
     }
 }

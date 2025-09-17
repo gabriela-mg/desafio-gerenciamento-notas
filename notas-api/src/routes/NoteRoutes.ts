@@ -24,6 +24,6 @@ noteRoutes.post('/note', noteValidator.validadePostNote, noteController.addNote)
 
 noteRoutes.put('/note/:id', noteValidator.validadePutNote, noteController.updateNote)
 
-noteRoutes.delete('/note/:id', noteValidator.validateParams, noteController.deleteNote)
+noteRoutes.delete('/note/:id', noteValidator.validadeDeleteNote, noteController.deleteNote)
 
 export default noteRoutes
