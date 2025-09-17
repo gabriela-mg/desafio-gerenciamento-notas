@@ -29,60 +29,70 @@ function Filter() {
         try {
             await axios.get('http://localhost:3000/api/note', { params: { date: date, text: text }}).then((response) => {
                 setNotes(response.data)
+                console.log(text)
+            })
+        } catch(error) {
+        }
+    }
+
+    const cleanFilter = async () => {
+        try {
+            axios.get('http://localhost:3000/api/note').then((response) => {
+                setDate("")
+                setText("")
+                setNotes(response.data)
             })
         } catch(error) {
         }
     }
      
     useEffect(() => {
-        const fetchData = async() => {
-            try {
-                await axios.get('http://localhost:3000/api/note').then((response) => {
-                    setNotes(response.data)
-                })
-            } catch(error) {
-            }
+        try {
+            axios.get('http://localhost:3000/api/note').then((response) => {
+                setNotes(response.data)
+            })
+        } catch(error) {
         }
-    
-        fetchData() 
+        
     }, [])
 
     return (
         <>       
-        <Grid container spacing={2} rowSpacing={1} 
-                columnSpacing={{ xs: 1, sm: 2, md: 3 }} 
-                sx={{
-                    justifyContent: "center",
-                    alignItems: "center",
-                }}
-            >
-            <Input 
-                autoFocus
-                required
-                margin="dense"
-                id="text"
-                name="text"
-                type="text"
-                fullWidth
-                value={ text }
-                onChange={ handleTextChange }
-                sx={{width: '20%'}}
-            />
-            <Input
-                autoFocus
-                required
-                margin="dense"
-                id="date"
-                name="date"
-                type="date"
-                fullWidth
-                value={ date }
-                onChange={ handleDateChange }
-                sx={{width: '20%'}}
-            />
-            <Button type="submit" onClick={ filterNotes } variant="outlined"> Filtrar </Button>
-            
-            <NewNote></NewNote>
+            <Grid container spacing={2} rowSpacing={1} 
+                    columnSpacing={{ xs: 1, sm: 2, md: 3 }} 
+                    sx={{
+                        justifyContent: "center",
+                        alignItems: "center",
+                    }}
+                >
+                <Input 
+                    autoFocus
+                    required
+                    margin="dense"
+                    id="text"
+                    name="text"
+                    type="text"
+                    fullWidth
+                    value={ text }
+                    onChange={ handleTextChange }
+                    sx={{width: '20%'}}
+                />
+                <Input
+                    autoFocus
+                    required
+                    margin="dense"
+                    id="date"
+                    name="date"
+                    type="date"
+                    fullWidth
+                    value={ date }
+                    onChange={ handleDateChange }
+                    sx={{width: '20%'}}
+                />
+                <Button type="submit" onClick={ filterNotes } variant="outlined"> Filtrar </Button>
+                <Button type="submit" onClick={ cleanFilter } variant="outlined"> Limpar filtro </Button>
+
+                <NewNote></NewNote>
             </Grid>
             
             <Notes notes={notes}/>

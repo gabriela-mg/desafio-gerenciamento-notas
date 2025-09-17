@@ -1,6 +1,7 @@
 import { Card, CardActions, CardContent, Grid, Typography } from '@mui/material';
 import { Link } from 'react-router';
 import type { Note } from './Filter';
+import { Box } from '@mui/system';
 
 function Notes({ notes }: { notes: Note[] }) {
 
@@ -27,12 +28,22 @@ function Notes({ notes }: { notes: Note[] }) {
                         
                             <Card sx={{width: '30%'}}>
                                 <CardContent>
-                                    <Typography fontWeight={'bold'}>
-                                        { note?.title } 
-                                    </Typography>
-                                    <Typography>
-                                        { formatDate(note?.date) }
-                                    </Typography>
+                                    <Box 
+                                        sx={{ 
+                                            display: 'flex', 
+                                            justifyContent: 'space-between', 
+                                            alignItems: 'center', 
+                                            width: '100%' 
+                                        }}
+                                    >
+                                         <Typography fontWeight={'bold'}>
+                                            { note?.title } 
+                                        </Typography>
+                                        <Typography variant='body2' alignSelf={'start'}>
+                                            { formatDate(note?.date) }
+                                        </Typography>
+                                    </Box>
+                                    
                                     <Typography textOverflow={'ellipsis'} sx = {{ overflow: 'hidden', whiteSpace: 'nowrap' }}>
                                         { note?.description }
                                     </Typography>

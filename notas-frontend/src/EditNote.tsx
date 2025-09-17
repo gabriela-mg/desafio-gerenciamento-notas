@@ -4,7 +4,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Input, InputLabel, OutlinedInput } from '@mui/material';
+import { ButtonGroup, Input, InputLabel, OutlinedInput } from '@mui/material';
 type Note = {
     title: string,
     description: string,
@@ -90,8 +90,11 @@ export default function EditNote({note}: {note: Note}) {
                         />
                         <br/>
                         <br/>
-                        <Button type="submit"> Editar </Button>
-                        <Button onClick={handleClose}> Cancelar </Button>
+                        <ButtonGroup>
+                            <Button type="submit"> Editar </Button>
+                            <Button onClick={handleClose}> Cancelar </Button>
+                        </ButtonGroup>
+                        
                     </form>          
                 </DialogContent>
             </Dialog>
