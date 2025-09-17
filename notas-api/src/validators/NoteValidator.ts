@@ -3,15 +3,18 @@ import Note from './noteGetSchema'
 import NoteGetSchema from './noteGetSchema'
 import NoteGetOneSchema from './noteGetOneSchema'
 import NotePostSchema from './notePostSchema'
+import NotePutSchema from './notePutSchema'
 
 export class NoteValidator {
 
     public validadeGetNotes(req: Request, res: Response, next) {
         try{
             const query = NoteGetSchema.parse({text: req.query.text, date: req.query.date})
-            req.query = query
+            console.log("oi")
+            //req.query = query
             next()
         } catch(error) {
+            console.log(error)
             res.sendStatus(400)
         }
     }
@@ -19,7 +22,7 @@ export class NoteValidator {
     public validadeGetOneNote(req: Request, res: Response, next) {
         try {
             const param = NoteGetOneSchema.parse({id: req.params.id})
-            req.params = param
+            //req.params = param
             next()
         } catch(error) {
             res.sendStatus(400)
@@ -29,15 +32,24 @@ export class NoteValidator {
     public validadePostNote(req: Request, res: Response, next) {
         try {
             const body = NotePostSchema.parse({title: req.body.title, description: req.body.description})
-            req.body = body
+           // req.body = body
             next()
         } catch(error) {
             res.sendStatus(400)
         }
     }
 
-    public validadePutNote() {
-        
+    public validadePutNote(req: Request, res: Response, next) {
+        try {
+            const body = NotePutSchema.parse({id: req.params.id, title: req.body.title, description: req.body.description})
+            console.log(body)
+           // req.body = body
+            console.log(req.params.id)
+            next()
+        } catch(error) {
+            console.log(error)
+            res.sendStatus(400)
+        }
     }
 
     public validadeDeleteNote() {
