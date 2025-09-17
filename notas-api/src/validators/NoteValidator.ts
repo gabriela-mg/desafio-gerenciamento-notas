@@ -1,11 +1,48 @@
 import { Request, Response } from 'express'
-import Note from './noteSchema'
+import Note from './noteGetSchema'
+import NoteGetSchema from './noteGetSchema'
+import NoteGetOneSchema from './noteGetOneSchema'
 
 export class NoteValidator {
+
+    public validadeGetNotes(req: Request, res: Response, next) {
+        try{
+            const body = NoteGetSchema.parse({text: req.query.text, date: req.query.date})
+            console.log("body : " , body)
+            next()
+        } catch(error) {
+            res.sendStatus(400)
+            console.log(error)
+        }
+    }
+    
+    public validadeGetOneNote(req: Request, res: Response, next) {
+        try {
+            const param = NoteGetOneSchema.parse({id: req.params.id})
+            req.params = param
+            next()
+        } catch(error) {
+            res.sendStatus(400)
+        }
+        
+    }
+    public validadePostNotes() {
+        
+    }
+
+    public validadePutNotes() {
+        
+    }
+
+    public validadeDeleteNotes() {
+        
+    }
     public validateBody(req: Request, res: Response, next) {
         try {
-            Note.parse({id: null, title: req.body.title, description: null, text: req.body.description, date: null})
-            next()
+            const body = Note.parse({id: null, title: req.body.title, description: req.body.description, text: null, date: null})
+            req.body = body
+                        next()
+
         } catch(error) {
             res.sendStatus(400)
         }

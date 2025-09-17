@@ -16,9 +16,9 @@ const timeLog = (req, res, next) => {
 }
 noteRoutes.use(timeLog)
 
-noteRoutes.get('/note', noteValidator.validateQuery, noteController.getNotes)
+noteRoutes.get('/note', noteValidator.validadeGetNotes, noteController.getNotes)
 
-noteRoutes.get('/note/:id', noteValidator.validateParams, noteController.getOneNote)
+noteRoutes.get('/note/:id', noteValidator.validadeGetOneNote, noteController.getOneNote)
 
 noteRoutes.post('/note', noteValidator.validateBody, noteController.addNote)
 
