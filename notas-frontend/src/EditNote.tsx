@@ -4,7 +4,8 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { ButtonGroup, Input, InputLabel, OutlinedInput } from '@mui/material';
+import { ButtonGroup, Input, InputLabel, OutlinedInput, Typography } from '@mui/material';
+import { redirect } from 'react-router';
 type Note = {
     title: string,
     description: string,
@@ -46,7 +47,7 @@ export default function EditNote({note}: {note: Note}) {
         }
         
         axios.put(`http://localhost:3000/api/note/${note.id}`, createNote).then(() => {
-            window.location.href = `http://localhost:5173/note/${note.id}`
+            redirect(`http://localhost:5173/note/${note.id}`)
         })
         handleClose();
     };
@@ -54,7 +55,9 @@ export default function EditNote({note}: {note: Note}) {
     return (
         <>
             <Button variant="outlined" onClick={handleClickOpen}>
-                Editar
+                <Typography>
+                    Editar
+                </Typography>
             </Button>
             <Dialog open={open} onClose={handleClose} sx={{ width: '100%'}} fullWidth={true}>
                 <DialogTitle>EDITAR NOTA</DialogTitle>

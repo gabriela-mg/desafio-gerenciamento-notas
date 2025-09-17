@@ -5,6 +5,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { useState } from 'react';
 import axios from 'axios';
 import { Input, InputLabel, OutlinedInput } from '@mui/material';
+import { redirect } from 'react-router';
 
 
 export default function NewNote() {
@@ -40,7 +41,7 @@ export default function NewNote() {
         console.log(createNote)
         axios.post("http://localhost:3000/api/note", createNote).then((response) => {
             console.log(response.status, response.data)
-            window.location.href = "/"
+            redirect("/")
         })
         handleClose();
     };

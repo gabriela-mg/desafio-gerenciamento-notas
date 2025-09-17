@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router';
+import { redirect, useParams } from 'react-router';
 import { Card, CardContent, Typography, Grid, ButtonGroup, Button, Alert } from '@mui/material';
 import EditNote from './EditNote';
 type Note = {
@@ -28,7 +28,7 @@ function Note() {
     const deleteNote = async() => {
         const answer = await axios.delete(`http://localhost:3000/api/note/${params.id}`)
         if(answer.status === 200) {
-            window.location.href = '/';
+           redirect("/")
         } else {
             setError("Erro ao deletar nota")
         }
