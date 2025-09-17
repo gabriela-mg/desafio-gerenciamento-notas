@@ -1,4 +1,4 @@
-import { Request, Response } from 'express'
+import { Request, RequestHandler, Response } from 'express'
 import Note from './noteGetSchema'
 import NoteGetSchema from './noteGetSchema'
 import NoteGetOneSchema from './noteGetOneSchema'
@@ -8,11 +8,9 @@ import NoteDeleteSchema from './noteDeleteSchema'
 
 export class NoteValidator {
 
-    public validadeGetNotes(req: Request, res: Response, next) {
+    public validadeGetNotes: RequestHandler= (req, res, next) =>{
         try{
-            const query = NoteGetSchema.parse({text: req.query.text, date: req.query.date})
-            console.log("oi")
-            //req.query = query
+            NoteGetSchema.parse({text: req.query.text, date: req.query.date})
             next()
         } catch(error) {
             console.log(error)
@@ -22,8 +20,10 @@ export class NoteValidator {
     
     public validadeGetOneNote(req: Request, res: Response, next) {
         try {
-            const param = NoteGetOneSchema.parse({id: req.params.id})
-            //req.params = param
+            const getOneParam = NoteGetOneSchema.parse({id: req.params.id})
+            req.params = {
+                id: getOneParam.id
+            }
             next()
         } catch(error) {
             res.sendStatus(400)
@@ -32,8 +32,11 @@ export class NoteValidator {
     }
     public validadePostNote(req: Request, res: Response, next) {
         try {
-            const body = NotePostSchema.parse({title: req.body.title, description: req.body.description})
-           // req.body = body
+            const postBody = NotePostSchema.parse({title: req.body.title, description: req.body.description})
+            req.body = {
+                title: postBody.title,
+                description: postBody.description
+            }
             next()
         } catch(error) {
             res.sendStatus(400)
@@ -42,9 +45,16 @@ export class NoteValidator {
 
     public validadePutNote(req: Request, res: Response, next) {
         try {
-            const body = NotePutSchema.parse({id: req.params.id, title: req.body.title, description: req.body.description})
-           // req.body = body
-            console.log(req.params.id)
+            const putBody = NotePutSchema.parse({id: req.params.id, title: req.body.title, description: req.body.description})
+            req.body = {
+                title: putBody.title,
+                description: putBody.description
+            }
+
+            req.params = {
+                id: putBody.id
+            }
+
             next()
         } catch(error) {
             console.log(error)
@@ -54,7 +64,10 @@ export class NoteValidator {
 
     public validadeDeleteNote(req: Request, res: Response, next) {
         try {
-            const param = NoteDeleteSchema.parse({id: req.params.id})
+            const deleteParam = NoteDeleteSchema.parse({id: req.params.id})
+            req.params = {
+                id: deleteParam.id
+            }
             next()
         } catch(error) {
             res.sendStatus(400)
