@@ -16,14 +16,14 @@ const timeLog = (req, res, next) => {
 }
 noteRoutes.use(timeLog)
 
-noteRoutes.get('/note', noteValidator.validateQuery, noteController.getNotes)
+noteRoutes.get('/note', noteValidator.validadeGetNotes, noteController.getNotes)
 
-noteRoutes.get('/note/:id', noteValidator.validateParams, noteController.getOneNote)
+noteRoutes.get('/note/:id', noteValidator.validadeGetOneNote, noteController.getOneNote)
 
-noteRoutes.post('/note', noteValidator.validateBody, noteController.addNote)
+noteRoutes.post('/note', noteValidator.validadePostNote, noteController.addNote)
 
-noteRoutes.put('/note/:id', noteValidator.validateParams, noteValidator.validateBody, noteController.updateNote)
+noteRoutes.put('/note/:id', noteValidator.validadePutNote, noteController.updateNote)
 
-noteRoutes.delete('/note/:id', noteValidator.validateParams, noteController.deleteNote)
+noteRoutes.delete('/note/:id', noteValidator.validadeDeleteNote, noteController.deleteNote)
 
 export default noteRoutes

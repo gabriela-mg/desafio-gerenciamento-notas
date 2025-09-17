@@ -32,7 +32,7 @@ export class NoteController {
 
     public addNote = async (req: Request, res: Response) => {
         try {
-            const note = await this.noteService.createNote(req.body.title, req.body.description)
+            const note = await this.noteService.addNote(req.body.title, req.body.description)
             res.send(note)
             res.status(200)
         } catch(error) {

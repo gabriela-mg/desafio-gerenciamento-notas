@@ -1,17 +1,51 @@
-// This is used for getting user input.
-import { createInterface } from "node:readline/promises";
+import { CreateBucketCommand, DeleteBucketCommand, DeleteObjectCommand, GetObjectCommand, paginateListObjectsV2, PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import { createInterface } from "readline";
 
-import {
-  S3Client,
-  PutObjectCommand,
-  CreateBucketCommand,
-  DeleteObjectCommand,
-  DeleteBucketCommand,
-  paginateListObjectsV2,
-  GetObjectCommand,
-} from "@aws-sdk/client-s3";
+const AWS = require('aws-sdk');
 
-export async function main() {
+// Configure the AWS SDK to use the LocalStack endpoint and credentials
+const lambda = new AWS.Lambda({
+  endpoint: 'http://localhost:4566',
+  accessKeyId: 'test',
+  secretAccessKey: 'test',
+  region: 'us-east-1',
+});
+
+// List the Lambda functions using the LocalStack endpoint
+lambda.listFunctions({}, (err, data) => {
+  if (err) {
+    console.error(err);
+  } else {
+    console.log(data);
+  }
+});
+
+// Now, we create an S3 client, which has a special endpoint
+// You can read the S3 documentation to learn more about the different endpoints.
+const s3 = new AWS.S3({
+  endpoint: 'http://s3.localhost.localstack.cloud:4566',
+  s3ForcePathStyle: true,  // If you want to use virtual host addressing of buckets, you can remove `s3ForcePathStyle: true`.
+  accessKeyId: 'test',
+  secretAccessKey: 'test',
+  region: 'us-east-1',
+});
+
+// If your region is `us-east-1`, you will need to override the globalEndpoint of the client
+// due to an issue in the SDK with `createBucket`.
+// you will need to set it to the hostname of your endpoint specified right above
+// If your region is different than `us-east-1`, you can skip that line
+s3.api.globalEndpoint = 's3.localhost.localstack.cloud';
+
+// Call an S3 API using the LocalStack endpoint
+s3.listBuckets((err, data) => {
+  if (err) {
+    console.error(err);
+  } else {
+    console.log(data);
+  }
+});
+
+async function sla() {
   // A region and credentials can be declared explicitly. For example
   // `new S3Client({ region: 'us-east-1', credentials: {...} })` would
   //initialize the client with those settings. However, the SDK will
@@ -53,7 +87,7 @@ export async function main() {
     output: process.stdout,
   });
 
-  const result = await prompt.question("Empty and delete bucket? (y/n) ");
+  const result = await prompt.question("Empty and delete bucket? (y/n) ", ()=>{});
   prompt.close();
 
   if (result === "y") {
@@ -77,11 +111,5 @@ export async function main() {
     // Once all the objects are gone, the bucket can be deleted.
     await s3Client.send(new DeleteBucketCommand({ Bucket: bucketName }));
   }
-}
 
-// Call a function if this file was run directly. This allows the file
-// to be runnable without running on import.
-import { fileURLToPath } from "node:url";
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  main();
 }

@@ -19,7 +19,7 @@ export class NoteService {
         return note
     }
 
-    public async createNote(title: string, description: string) {
+    public async addNote(title: string, description: string) {
         const note = new Note()    
         note.title = title
         note.description = description
