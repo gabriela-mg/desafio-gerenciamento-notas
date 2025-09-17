@@ -2,17 +2,17 @@ import { Request, Response } from 'express'
 import Note from './noteGetSchema'
 import NoteGetSchema from './noteGetSchema'
 import NoteGetOneSchema from './noteGetOneSchema'
+import NotePostSchema from './notePostSchema'
 
 export class NoteValidator {
 
     public validadeGetNotes(req: Request, res: Response, next) {
         try{
-            const body = NoteGetSchema.parse({text: req.query.text, date: req.query.date})
-            console.log("body : " , body)
+            const query = NoteGetSchema.parse({text: req.query.text, date: req.query.date})
+            req.query = query
             next()
         } catch(error) {
             res.sendStatus(400)
-            console.log(error)
         }
     }
     
@@ -26,15 +26,21 @@ export class NoteValidator {
         }
         
     }
-    public validadePostNotes() {
+    public validadePostNote(req: Request, res: Response, next) {
+        try {
+            const body = NotePostSchema.parse({title: req.body.title, description: req.body.description})
+            req.body = body
+            next()
+        } catch(error) {
+            res.sendStatus(400)
+        }
+    }
+
+    public validadePutNote() {
         
     }
 
-    public validadePutNotes() {
-        
-    }
-
-    public validadeDeleteNotes() {
+    public validadeDeleteNote() {
         
     }
     public validateBody(req: Request, res: Response, next) {

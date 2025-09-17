@@ -20,7 +20,7 @@ noteRoutes.get('/note', noteValidator.validadeGetNotes, noteController.getNotes)
 
 noteRoutes.get('/note/:id', noteValidator.validadeGetOneNote, noteController.getOneNote)
 
-noteRoutes.post('/note', noteValidator.validateBody, noteController.addNote)
+noteRoutes.post('/note', noteValidator.validadePostNote, noteController.addNote)
 
 noteRoutes.put('/note/:id', noteValidator.validateParams, noteValidator.validateBody, noteController.updateNote)
 
