@@ -1,4 +1,4 @@
-import { Button, Grid, Input } from "@mui/material";
+import { Button, Grid, Input, Typography } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Notes from "./Notes";
@@ -14,20 +14,25 @@ export type Note = {
 function Filter() {
 
     const [text, setText] = useState("")
-    const [date, setDate] = useState("")
+    const [startDate, setStartDate] = useState("")
+    const [endDate, setEndDate] = useState("")
     const [notes, setNotes] = useState<Note[]>([])
 
     const handleTextChange = (e: any) => {
         setText(e.target.value);
     };
   
-    const handleDateChange = (e: any) => {
-        setDate(e.target.value);
+    const handleStartDateChange = (e: any) => {
+        setStartDate(e.target.value);
+    };
+
+    const handleEndDateChange = (e: any) => {
+        setEndDate(e.target.value);
     };
 
     const filterNotes = async () => {
         try {
-            await axios.get('http://localhost:3000/api/note', { params: { date: date, text: text }}).then((response) => {
+            await axios.get('http://localhost:3000/api/note', { params: { startDate: startDate, text: text, endDate: endDate }}).then((response) => {
                 setNotes(response.data)
                 console.log(text)
             })
@@ -38,7 +43,8 @@ function Filter() {
     const cleanFilter = async () => {
         try {
             axios.get('http://localhost:3000/api/note').then((response) => {
-                setDate("")
+                setStartDate("")
+                setEndDate("")
                 setText("")
                 setNotes(response.data)
             })
@@ -85,15 +91,31 @@ function Filter() {
                     name="date"
                     type="date"
                     fullWidth
-                    value={ date }
-                    onChange={ handleDateChange }
-                    sx={{width: '20%'}}
+                    value={ startDate}
+                    onChange={ handleStartDateChange }
+                    sx={{width: '10%'}}
+                />
+                <Typography> até </Typography>
+                <Input
+                    autoFocus
+                    required
+                    margin="dense"
+                    id="date"
+                    name="date"
+                    type="date"
+                    fullWidth
+                    value={ endDate }
+                    onChange={ handleEndDateChange }
+                    sx={{width: '10%'}}
                 />
                 <Button type="submit" onClick={ filterNotes } variant="outlined"> Filtrar </Button>
                 <Button type="submit" onClick={ cleanFilter } variant="outlined"> Limpar filtro </Button>
 
                 <NewNote></NewNote>
             </Grid>
+
+            <br/>
+            <br/>
             
             <Notes notes={notes}/>
         </>
