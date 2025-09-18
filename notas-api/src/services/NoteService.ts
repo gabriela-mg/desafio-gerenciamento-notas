@@ -8,9 +8,14 @@ export class NoteService {
         this.noteRepository = noteRepository
     }
 
-    public async selectNotes(text?: string | any, date?: string | any) {
-        const notes = (date!==undefined || text!== undefined) ? await this.selectNotesByFilters(text, date) : await this.noteRepository.findNotes()
-        return notes
+    public async selectNotes(text?: string, startDate?: string, endDate?: string) {
+        if(text || startDate || endDate) {
+            const notes = this.noteRepository.findNotesByFilters(text, startDate, endDate)
+            return notes
+        } else {
+            const notes = this.noteRepository.findNotes()
+            return notes
+        }
     }
 
     public async selectNoteByID(id: string) {
@@ -42,28 +47,4 @@ export class NoteService {
         return answer
     }
 
-    public async selectNotesByFilters(text?: string, date?: string) {
-        const startOfDay = new Date(date)
-        const endOfDay = new Date(date)
-
-        if(date !== undefined && date.trim().length > 0) {
-            startOfDay.setUTCHours(0, 0, 0, 0)
-            endOfDay.setUTCHours(23, 59, 59, 999)
-
-            if(text !==undefined && text.trim().length === 0) {
-                text = ""
-            } 
-
-            const answer = await this.noteRepository.findNotesByFilters(text, startOfDay, endOfDay)
-                    
-            return answer
-        } else {
-            if(text !==undefined && text.trim().length === 0) {
-                text = ""
-            } 
-            const answer = await this.noteRepository.findNotesByFilters(text)
-                    
-            return answer
-        }        
-    }
 }

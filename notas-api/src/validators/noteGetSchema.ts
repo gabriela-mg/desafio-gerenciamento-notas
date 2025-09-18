@@ -1,7 +1,8 @@
 import * as z from "zod"
 
 const NoteGetSchema = z.object({
-    date: z.string().nullish(),
+    startDate: z.string().nullish(),
+    endDate : z.string().nullish(),
     text: z.string().nullish()
 })
 

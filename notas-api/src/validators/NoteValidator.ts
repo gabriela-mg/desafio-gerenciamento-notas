@@ -10,7 +10,12 @@ export class NoteValidator {
 
     public validadeGetNotes: RequestHandler= (req, res, next) =>{
         try{
-            NoteGetSchema.parse({text: req.query.text, date: req.query.date})
+            const getNotes = NoteGetSchema.parse({text: req.query.text, startDate: req.query.startDate, endDate: req.query.endDate})
+            req.body = {
+                text: getNotes.text,
+                startDate: getNotes.startDate,
+                endDate: getNotes.endDate
+            }
             next()
         } catch(error) {
             console.log(error)

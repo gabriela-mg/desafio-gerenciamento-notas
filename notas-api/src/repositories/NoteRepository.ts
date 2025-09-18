@@ -18,5 +18,5 @@ export interface NoteRepository {
 
     deleteNote(id: number): Promise<boolean>
 
-    findNotesByFilters(text?: string, startDate?: Date, endDate?: Date): Promise<Note[]>
+    findNotesByFilters(text?: string, startDate?: string, endDate?: string): Promise<Note[]>
 }

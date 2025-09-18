@@ -1,7 +1,8 @@
 import { Note } from "../database/entities/Note.entity.ts";
 import AppDataSource from "../database/data-source.ts";
 import { NoteRepository } from "./NoteRepository.ts";
-import { Between, Brackets, Like } from "typeorm";
+import { Between, Brackets, LessThanOrEqual, Like, MoreThanOrEqual } from "typeorm";
+import { start } from "repl";
 
 export class TypeORMNoteRepository implements NoteRepository {
 
@@ -51,32 +52,97 @@ export class TypeORMNoteRepository implements NoteRepository {
         }
     }
 
-    public async findNotesByFilters(text?: string, startDate?: Date, endDate?: Date) {
-        if(startDate === undefined) {
-            const notes = await this.noteRepository.find({
-                where: [
-                    { title: Like("%"+ text +"%") },
-                    { description: Like("%"+ text +"%") },
-                ],
-                order: {
-                    date: "DESC"
-                }
-            })
+    public async findNotesByFilters(text?: string, firstDate?: string, lastDate?: string) {
+        if(text === undefined || text.trim().length === 0) {
+            text = ""
+        } 
 
+        const startDate = (firstDate) ? new Date(firstDate) : null
+        const endDate = (lastDate) ? new Date(lastDate) : null
+
+        if(startDate && endDate) {            
+            const notes = this.findNotesbyDateInterval(text, startDate, endDate)
+            return notes
+        } else if(startDate) {
+            const notes = this.findNotesbyStartDate(text, startDate)
+            return notes
+        } else if(endDate) {
+            const notes = this.findNotesbyEndDate(text, endDate)
             return notes
         } else {
-            const notes = await this.noteRepository.createQueryBuilder('note')
+            const notes = this.findNotesbyText(text)
+            return notes
+        }
+       
+    }
+
+    public async findNotesbyText(text: string) {
+        const notes = await this.noteRepository.find({
+            where: [
+                { title: Like("%"+ text +"%") },
+                { description: Like("%"+ text +"%") },
+            ],
+            order: {
+                date: "DESC"
+            }
+        })
+        
+        return notes
+    }
+
+    public async findNotesbyStartDate(text: string, startDate: Date) {
+        startDate.setUTCHours(0, 0, 0, 0)
+        const notes = await this.noteRepository.createQueryBuilder('note')
+        .where(
+            new Brackets((qb1) => {
+                qb1.where(`note.title like :text`, { text: `%${text}%` }).
+                orWhere(`note.description like :text`, { text: `%${text}%` });
+            })
+        )
+        .andWhere({
+            date: MoreThanOrEqual(startDate)
+        })
+        .orderBy("note.date", "DESC")        
+        .getMany();
+
+        return notes
+    }
+
+    public async findNotesbyEndDate(text: string, endDate: Date) {
+        endDate.setUTCHours(23, 59, 59, 999)
+        const notes = await this.noteRepository.createQueryBuilder('note')
+        .where(
+            new Brackets((qb1) => {
+                qb1.where(`note.title like :text`, { text: `%${text}%` }).
+                orWhere(`note.description like :text`, { text: `%${text}%` });
+            })
+        )
+        .andWhere({
+            date: LessThanOrEqual(endDate)
+        })
+        .orderBy("note.date", "DESC")
+        .getMany();
+
+        return notes
+    }
+
+    public async findNotesbyDateInterval(text: string, startDate: Date, endDate: Date) {
+        startDate.setUTCHours(0, 0, 0, 0)
+        endDate.setUTCHours(23, 59, 59, 999)
+
+        const notes = await this.noteRepository.createQueryBuilder('note')
             .where(
                 new Brackets((qb1) => {
                     qb1.where(`note.title like :text`, { text: `%${text}%` }).
                     orWhere(`note.description like :text`, { text: `%${text}%` });
                 })
             )
-            .andWhere(`note.date between :startDate and :endDate`, {startDate, endDate}).getMany();
-
-            return notes
-        }
-       
+            .andWhere(`note.date between :startDate and :endDate`, {startDate, endDate})
+            .orderBy("note.date", "DESC")
+            .getMany()
+            
+        
+        return notes        
     }
 
 } 

@@ -9,12 +9,13 @@ export class NoteController {
 
     public getNotes = async (req: Request, res: Response) => {
         try {
-            const { date, text} = req.query
-            const notes = await this.noteService.selectNotes(text, date)
+            const { text, startDate, endDate } = req.body
+            const notes = await this.noteService.selectNotes(text, startDate, endDate)
 
             res.send(notes)
             res.status(200)
         } catch(error) {
+            console.log(error)
             res.sendStatus(500)
         }
     }
