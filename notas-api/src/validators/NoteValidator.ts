@@ -1,5 +1,4 @@
 import { Request, RequestHandler, Response } from 'express'
-import Note from './noteGetSchema'
 import NoteGetSchema from './noteGetSchema'
 import NoteGetOneSchema from './noteGetOneSchema'
 import NotePostSchema from './notePostSchema'
@@ -35,6 +34,7 @@ export class NoteValidator {
         }
         
     }
+    
     public validadePostNote(req: Request, res: Response, next) {
         try {
             const postBody = NotePostSchema.parse({title: req.body.title, description: req.body.description})
