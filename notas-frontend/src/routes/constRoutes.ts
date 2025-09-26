@@ -5,4 +5,7 @@ export function makeApiNoteRoute(noteId?: string): string {
     return apiNoteRoute
 }
 
-
+export function makeFrontNoteRoute(noteId: number): string {
+    const frontNoteRoute = "note/" + noteId
+    return frontNoteRoute
+}
