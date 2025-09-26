@@ -1,6 +1,7 @@
 import { ParsedQs } from "qs"
 import { Note } from "../database/entities/Note.entity"
 import { NoteRepository } from "../repositories/NoteRepository"
+import { start } from "repl"
 
 export class NoteService {
 
@@ -8,14 +9,14 @@ export class NoteService {
         this.noteRepository = noteRepository
     }
 
-    public async selectNotes(text?: string, startDate?: string, endDate?: string) {
-        if(text || startDate || endDate) {
-            const notes = this.noteRepository.findNotesByFilters(text, startDate, endDate)
-            return notes
-        } else {
-            const notes = this.noteRepository.findNotes()
-            return notes
-        }
+    public async selectNotes(text?: string, startDate?: Date, endDate?: Date) {
+
+        const parsedStartDate = startDate ?? null
+        const parsedEndDate = endDate ?? null
+        
+        const notes = await this.noteRepository.findNotes(text, parsedStartDate, parsedEndDate)
+
+        return notes
     }
 
     public async selectNoteByID(id: string) {
