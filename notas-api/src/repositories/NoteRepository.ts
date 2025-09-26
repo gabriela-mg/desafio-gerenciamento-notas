@@ -8,7 +8,7 @@ type Note = {
 }
 
 export interface NoteRepository {
-    findNotes(): Promise<Note[]>
+    findNotes(text?: string, startDate?: Date, endDate?: Date): Promise<Note[]>
 
     findNoteById(id: number): Promise<Note> 
 
@@ -17,6 +17,4 @@ export interface NoteRepository {
     updateNote(id: number, title: string, description: string): Promise<boolean>
 
     deleteNote(id: number): Promise<boolean>
-
-    findNotesByFilters(text?: string, startDate?: string, endDate?: string): Promise<Note[]>
 }

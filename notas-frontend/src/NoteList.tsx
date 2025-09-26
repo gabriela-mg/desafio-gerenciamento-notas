@@ -2,6 +2,7 @@ import { Card, CardActions, CardContent, Grid, Typography } from '@mui/material'
 import { Link } from 'react-router';
 import { Box } from '@mui/system';
 import type { Note } from './type/Note';
+import { makeFrontNoteRoute } from './routes/constRoutes';
 
 function NoteList({ notes }: { notes: Note[] }) {
 
@@ -46,8 +47,8 @@ function NoteList({ notes }: { notes: Note[] }) {
                                         { note.description }
                                     </Typography>
                                 </CardContent>
-                                <CardActions>
-                                    <Link to={"/note/" + note.id}>
+                                <CardActions>"/
+                                    <Link to={makeFrontNoteRoute(note.id)}>
                                         <Typography> Ver mais </Typography>
                                     </Link>                
                                 </CardActions>

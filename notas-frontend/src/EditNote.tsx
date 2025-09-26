@@ -2,10 +2,15 @@ import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
-import { ButtonGroup, Input, InputLabel, OutlinedInput, Typography } from '@mui/material';
-import { redirect } from 'react-router';
+import { ButtonGroup, InputLabel    , TextField, Typography } from '@mui/material';
+import { useNavigate } from 'react-router';
+import { makeApiNoteRoute } from './routes/constRoutes';
+import { useForm } from 'react-hook-form';
+import type { NotePutForm } from './schema/notePutSchema';
+import NotePutSchema from './schema/notePutSchema';
+import { zodResolver } from '@hookform/resolvers/zod';
 type Note = {
     title: string,
     description: string,
@@ -14,13 +19,14 @@ type Note = {
 
 export default function EditNote({note}: {note: Note}) {
   
-    const [open, setOpen] = useState(false);
-    const [title, setTitle] = useState(note.title)
-    const [desc, setDesc] = useState(note.description)
+    const [open, setOpen] = useState(false)
 
-    useEffect(() => {
-        console.log(title)
-    }, [title])
+    const { register, handleSubmit } = useForm<NotePutForm>({
+        resolver: zodResolver(NotePutSchema)
+    })
+
+    
+    const navigate = useNavigate()
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -31,23 +37,9 @@ export default function EditNote({note}: {note: Note}) {
         setOpen(false);
     };
 
-    const handleTitleChange = (e: any) => {
-        setTitle(e.target.value);
-    };
-  
-    const handleDescChange = (e: any) => {
-        setDesc(e.target.value);
-    };
-
-    const handleSubmit = (e: any) => {
-        e.preventDefault()
-        const createNote = {
-            title: title,
-            description: desc
-        }
-        
-        axios.put(`http://localhost:3000/api/note/${note.id}`, createNote).then(() => {
-            redirect(`http://localhost:5173/note/${note.id}`)
+    const onSubmit = (data: any) => {        
+        axios.put(makeApiNoteRoute(note.id), data).then(() => {
+            navigate(0)
         })
         handleClose();
     };
@@ -62,34 +54,29 @@ export default function EditNote({note}: {note: Note}) {
             <Dialog open={open} onClose={handleClose} sx={{ width: '100%'}} fullWidth={true}>
                 <DialogTitle>EDITAR NOTA</DialogTitle>
                 <DialogContent>
-                    <form onSubmit={handleSubmit} action="/">
+                    <form onSubmit={handleSubmit(onSubmit)} action="/">
                         <InputLabel>Titulo*</InputLabel>
-                        <Input
+                        <TextField
                             autoFocus
-                            required
                             margin="dense"
                             id="title"
-                            name="title"
                             type="text"
                             fullWidth
-                            value={ title }
-                            onChange={ handleTitleChange }
+                            { ...register("title", {required: true})}
+
                         />
 
                         <InputLabel>Descrição*</InputLabel>
-                        <OutlinedInput
+                        <TextField
                             autoFocus
-                            required
                             margin="dense"
                             id="description"
-                            name="description"
                             type="text"
                             fullWidth
                             maxRows={10}
                             minRows={3}
                             multiline
-                            value={desc}
-                            onChange={handleDescChange}
+                            { ...register("description", {required: true})}
                         />
                         <br/>
                         <br/>

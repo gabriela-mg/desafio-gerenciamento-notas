@@ -4,47 +4,38 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useState } from 'react';
 import axios from 'axios';
-import { Input, InputLabel, OutlinedInput } from '@mui/material';
-import { redirect } from 'react-router';
-
+import { InputLabel, TextField } from '@mui/material';
+import {  useNavigate } from 'react-router';
+import { makeApiNoteRoute } from './routes/constRoutes';
+import { useForm } from "react-hook-form";
+import { zodResolver } from '@hookform/resolvers/zod';
+import type { NotePostForm } from './schema/notePostSchema';
+import NotePostSchema from './schema/notePostSchema';
 
 export default function NewNote() {
     const [open, setOpen] = useState(false);
-    const [title, setTitle] = useState("")
-    const [desc, setDesc] = useState("")
+
+    const { register, handleSubmit } = useForm<NotePostForm>({
+        resolver: zodResolver(NotePostSchema)
+    })
+
+    
+    const navigate = useNavigate()
 
     const handleClickOpen = () => {
         setOpen(true);
     };
 
     const handleClose = () => {
-        setTitle("")
-        setDesc("")
         setOpen(false);
     };
 
-    const handleTitleChange = (e: any) => {
-        setTitle(e.target.value);
-    };
-  
-    const handleDescChange = (e: any) => {
-        setDesc(e.target.value);
-    };
-
-    const handleSubmit = (e: any) => {
-        e.preventDefault()
-        const createNote = {
-            title: title,
-            description: desc
-        }
-        
-        console.log(createNote)
-        axios.post("http://localhost:3000/api/note", createNote).then((response) => {
-            console.log(response.status, response.data)
-            redirect("/")
+  const onSubmit = (data: any) => {
+        axios.post(makeApiNoteRoute(), data).then(() => {
+            navigate(0)
         })
         handleClose();
-    };
+    }
 
     return (
         <>
@@ -54,34 +45,28 @@ export default function NewNote() {
             <Dialog open={open} onClose={handleClose} sx={{ width: '100%'}} fullWidth={true}>
                 <DialogTitle>NOVA NOTA</DialogTitle>
                 <DialogContent>
-                    <form onSubmit={handleSubmit} action="/">
+                    <form onSubmit={handleSubmit(onSubmit)}>
                         <InputLabel>Titulo*</InputLabel>
-                        <Input
+                        <TextField
                             autoFocus
-                            required
                             margin="dense"
                             id="title"
-                            name="title"
                             type="text"
                             fullWidth
-                            value={ title }
-                            onChange={ handleTitleChange }
+                           { ...register("title", {required: true})}
                         />
 
                         <InputLabel>Descrição*</InputLabel>
-                        <OutlinedInput
+                        <TextField
                             autoFocus
-                            required
                             margin="dense"
                             id="description"
-                            name="description"
                             type="text"
                             fullWidth
                             maxRows={10}
                             minRows={3}
                             multiline
-                            value={desc}
-                            onChange={handleDescChange}
+                            {...register("description", {required: true})}
                         />
                         <Button type="submit"> Criar </Button>
                         <Button onClick={handleClose}> Cancelar </Button>
