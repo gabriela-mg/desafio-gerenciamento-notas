@@ -1,40 +1,37 @@
-import { Button, Grid, Input, Typography } from "@mui/material";
+import { Button, Grid, TextField, Typography } from "@mui/material"
 import axios from "axios";
 import { useEffect, useState } from "react";
-import Notes from "./Notes";
+import NoteList from "./NoteList";
 import NewNote from "./NewNote";
-
-export type Note = {
-    id: number,
-    title: string,
-    description: string,
-    date: string
-}
+import { makeApiNoteRoute } from "./routes/constRoutes";
+import type { Note } from "./type/Note";
+import { useForm } from "react-hook-form";
+import type { NoteGetForm } from "./schema/noteGetSchema";
+import NoteGetSchema from "./schema/noteGetSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { DatePicker } from '@mui/x-date-pickers/DatePicker'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 
 function Filter() {
 
-    const [text, setText] = useState("")
-    const [startDate, setStartDate] = useState("")
-    const [endDate, setEndDate] = useState("")
+    const { register, handleSubmit, reset } = useForm<NoteGetForm>({
+        defaultValues: {text: "", startDate: "", endDate: ""},
+        resolver: zodResolver(NoteGetSchema)
+    })
+
     const [notes, setNotes] = useState<Note[]>([])
 
-    const handleTextChange = (e: any) => {
-        setText(e.target.value);
-    };
-  
-    const handleStartDateChange = (e: any) => {
-        setStartDate(e.target.value);
-    };
 
-    const handleEndDateChange = (e: any) => {
-        setEndDate(e.target.value);
-    };
-
-    const filterNotes = async () => {
+    const filterNotes  = (data: NoteGetForm) => {
+        const {text, startDate, endDate } = data
         try {
-            await axios.get('http://localhost:3000/api/note', { params: { startDate: startDate, text: text, endDate: endDate }}).then((response) => {
+            axios.get(makeApiNoteRoute(), { params: {
+                text: text || undefined, 
+                startDate: startDate || undefined, 
+                endDate: endDate || undefined
+            }}).then((response) => {
                 setNotes(response.data)
-                console.log(text)
             })
         } catch(error) {
         }
@@ -42,11 +39,9 @@ function Filter() {
 
     const cleanFilter = async () => {
         try {
-            axios.get('http://localhost:3000/api/note').then((response) => {
-                setStartDate("")
-                setEndDate("")
-                setText("")
+            axios.get(makeApiNoteRoute()).then((response) => {
                 setNotes(response.data)
+                reset()
             })
         } catch(error) {
         }
@@ -54,7 +49,7 @@ function Filter() {
      
     useEffect(() => {
         try {
-            axios.get('http://localhost:3000/api/note').then((response) => {
+            axios.get(makeApiNoteRoute()).then((response) => {
                 setNotes(response.data)
             })
         } catch(error) {
@@ -71,44 +66,30 @@ function Filter() {
                         alignItems: "center",
                     }}
                 >
-                <Input 
+                <TextField 
                     autoFocus
-                    required
                     margin="dense"
                     id="text"
-                    name="text"
                     type="text"
                     fullWidth
-                    value={ text }
-                    onChange={ handleTextChange }
                     sx={{width: '20%'}}
+                    { ...register("text", {required: false})}
                 />
-                <Input
-                    autoFocus
-                    required
-                    margin="dense"
-                    id="date"
-                    name="date"
-                    type="date"
-                    fullWidth
-                    value={ startDate}
-                    onChange={ handleStartDateChange }
-                    sx={{width: '10%'}}
-                />
-                <Typography> até </Typography>
-                <Input
-                    autoFocus
-                    required
-                    margin="dense"
-                    id="date"
-                    name="date"
-                    type="date"
-                    fullWidth
-                    value={ endDate }
-                    onChange={ handleEndDateChange }
-                    sx={{width: '10%'}}
-                />
-                <Button type="submit" onClick={ filterNotes } variant="outlined"> Filtrar </Button>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                        autoFocus
+                        { ...register("startDate")}
+                        sx={{width: '10%'}}
+                    />
+                    <Typography> até </Typography>
+                    <DatePicker
+                        autoFocus
+                        { ...register("endDate")}
+                        sx={{width: '10%'}}
+                    />
+                </LocalizationProvider>
+
+                <Button type="submit" onClick={ handleSubmit(filterNotes) } variant="outlined"> Filtrar </Button>
                 <Button type="submit" onClick={ cleanFilter } variant="outlined"> Limpar filtro </Button>
 
                 <NewNote></NewNote>
@@ -117,7 +98,7 @@ function Filter() {
             <br/>
             <br/>
             
-            <Notes notes={notes}/>
+            <NoteList notes={notes}/>
         </>
     )
 }
