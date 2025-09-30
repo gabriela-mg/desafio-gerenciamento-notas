@@ -2,7 +2,7 @@
 import './App.css'
 
 import { Route, Routes } from 'react-router';
-import NoteCard from './NoteCard.tsx';
+import NoteCard from './pages/NoteCard.tsx';
 import Home from './Home.tsx';
 
 function App() {        

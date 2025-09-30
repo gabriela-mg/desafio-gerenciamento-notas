@@ -1,8 +1,8 @@
 import { Card, CardActions, CardContent, Grid, Typography } from '@mui/material';
 import { Link } from 'react-router';
 import { Box } from '@mui/system';
-import type { Note } from './type/Note';
-import { makeFrontNoteRoute } from './routes/constRoutes';
+import type { Note } from '../type/Note';
+import { makeFrontNoteRoute } from '../routes/constRoutes';
 
 function NoteList({ notes }: { notes: Note[] }) {
 

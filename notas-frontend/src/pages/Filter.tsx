@@ -3,11 +3,11 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import NoteList from "./NoteList";
 import NewNote from "./NewNote";
-import { makeApiNoteRoute } from "./routes/constRoutes";
-import type { Note } from "./type/Note";
+import { makeApiNoteRoute } from "../routes/constRoutes";
+import type { Note } from "../type/Note";
 import { useForm } from "react-hook-form";
-import type { NoteGetForm } from "./schema/noteGetSchema";
-import NoteGetSchema from "./schema/noteGetSchema";
+import type { NoteGetForm } from "../schema/noteGetSchema";
+import NoteGetSchema from "../schema/noteGetSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
