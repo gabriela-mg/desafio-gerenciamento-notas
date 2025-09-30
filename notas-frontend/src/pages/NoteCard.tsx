@@ -5,7 +5,7 @@ import { useParams } from 'react-router';
 import { Card, CardContent, Typography, Grid, ButtonGroup, Button, Alert } from '@mui/material';
 import EditNote from './EditNote';
 import { useNavigate } from "react-router-dom";
-import { makeApiNoteRoute } from './routes/constRoutes';
+import { makeApiNoteRoute } from '../routes/constRoutes';
 
 type Note = {
     title: string,

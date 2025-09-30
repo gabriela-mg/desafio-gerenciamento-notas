@@ -1,5 +1,5 @@
 import { Typography } from '@mui/material';
-import Filter from './Filter.tsx';
+import Filter from './pages/Filter.tsx';
 
 function Home() {
     
