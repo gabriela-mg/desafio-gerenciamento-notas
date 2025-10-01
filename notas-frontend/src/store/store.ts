@@ -1,10 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
-import notesReducer from './noteSlice'
+import { noteApi } from './noteSlice'
 
 export const store = configureStore({
   reducer: {
-    notes: notesReducer
-  }
+    [noteApi.reducerPath]: noteApi.reducer,
+  },
 })
 
 export type AppStore = typeof store
