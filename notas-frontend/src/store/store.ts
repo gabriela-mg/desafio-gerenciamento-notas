@@ -5,6 +5,8 @@ export const store = configureStore({
   reducer: {
     [noteApi.reducerPath]: noteApi.reducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(noteApi.middleware),
 })
 
 export type AppStore = typeof store
