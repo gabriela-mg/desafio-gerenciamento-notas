@@ -3,11 +3,15 @@ import { Link } from 'react-router';
 import { Box } from '@mui/system';
 import type { Note } from '../type/Note';
 import { makeFrontNoteRoute } from '../routes/constRoutes';
+import { useSelector } from 'react-redux';
+import { type RootState } from '../store/store';
 import { useGetNoteQuery } from '../store/noteSlice';
 
 function NoteList() {
 
-    const { data, error, isLoading } = useGetNoteQuery('')
+   useGetNoteQuery(undefined)
+    const notes = useSelector((state: RootState) => state.notes.notes)
+    console.log(notes)
 
     function formatDate(data: string) {
         const newDate = new Date(data)
@@ -24,10 +28,10 @@ function NoteList() {
                     alignItems: "center",
                 }}
             >
-                { !data || data.length === 0 ? (
+                { !notes || notes.length === 0 ? (
                         <Typography> Nenhuma nota encontrada</Typography>
                     ) : (
-                        data.map( (note: Note, index: number) =>                        
+                        notes.map( (note: Note, index: number) =>                        
                             <Card sx={{width: '30%'}} key={index}>
                                 <CardContent>
                                     <Box 

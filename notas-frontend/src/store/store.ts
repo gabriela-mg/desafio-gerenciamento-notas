@@ -1,8 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { noteApi } from './noteSlice'
+import noteReducer from './noteSlice'
 
 export const store = configureStore({
   reducer: {
+    notes: noteReducer,
     [noteApi.reducerPath]: noteApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>

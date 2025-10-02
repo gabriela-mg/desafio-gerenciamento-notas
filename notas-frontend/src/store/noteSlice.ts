@@ -2,12 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import type { Note } from '../type/Note'
 import { makeApiNoteRoute } from '../routes/constRoutes'
 import { createSlice } from '@reduxjs/toolkit'
-
-type NoteGetQuery = {
-    text: string | undefined, 
-    startDate: string | undefined, 
-    endDate: string | undefined
-}
+import type { NoteGetQuery } from '../type/NoteGetQuery'
 
 export const noteApi = createApi({
     reducerPath: 'noteApi',
@@ -17,17 +12,21 @@ export const noteApi = createApi({
             query: (id) => `/${id}`,
         }),
         getNote: builder.query({ query: () => ({ url: '/', method: 'get' }) }),
-        getNotesByFilter: builder.query<Note, NoteGetQuery>({
+        getNotesByFilter: builder.query<Note[], NoteGetQuery>({
             query: (params) => ({
-                url: '/posts',
+                url: '/',
                 params: params, 
             }),
         }),
     }),
 })
 
-const initialState = {
-    value: []
+type state = {
+    notes: Note[]
+}
+
+const initialState: state = {
+    notes: []
 }
 
 export const noteSlice = createSlice({
@@ -36,12 +35,14 @@ export const noteSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addMatcher(noteApi.endpoints.getNote.matchFulfilled, (state, action) => {
-      state.value = action.payload;
+      state.notes = action.payload;
     }),
     builder.addMatcher(noteApi.endpoints.getNotesByFilter.matchFulfilled, (state, action) => {
-      state.value = action.payload;
+      state.notes = action.payload;
     })
   }
 })
 
-export const { useGetNotebyIdQuery, useGetNoteQuery, useGetNotesByFilterQuery } = noteApi
+export const { useLazyGetNoteQuery, useLazyGetNotebyIdQuery, useLazyGetNotesByFilterQuery, useGetNoteQuery } = noteApi
+export default noteSlice.reducer
+

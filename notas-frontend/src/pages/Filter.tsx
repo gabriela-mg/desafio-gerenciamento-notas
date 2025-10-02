@@ -1,8 +1,4 @@
 import { Button, Grid, TextField, Typography } from "@mui/material"
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { makeApiNoteRoute } from "../routes/constRoutes";
-import type { Note } from "../type/Note";
 import { Controller, useForm } from "react-hook-form";
 import type { NoteGetForm } from "../schema/noteGetSchema";
 import NoteGetSchema from "../schema/noteGetSchema";
@@ -13,6 +9,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import NewNote from "./NewNote";
 import NoteList from "./NoteList";
 import dayjs from "dayjs";
+import { useLazyGetNoteQuery, useLazyGetNotesByFilterQuery } from "../store/noteSlice";
 
 function Filter() {
 
@@ -21,42 +18,34 @@ function Filter() {
         resolver: zodResolver(NoteGetSchema)
     })
 
-    const [notes, setNotes] = useState<Note[]>([])
+    const [triggerGetByFilter, { isFetching: isLoadingFilter }] = useLazyGetNotesByFilterQuery()
+    const [triggerGetAll, { isFetching: isLoadingAll }] = useLazyGetNoteQuery()
 
 
     const filterNotes  = (data: NoteGetForm) => {
         const {text, startDate, endDate } = data
         try {
-            axios.get(makeApiNoteRoute(), { params: {
+            console.log("oi")
+            const params ={
                 text: text || undefined, 
                 startDate: startDate || undefined, 
                 endDate: endDate || undefined
-            }}).then((response) => {
-                setNotes(response.data)
-            })
+            }
+            triggerGetByFilter(params)
         } catch(error) {
+            console.log(error)
         }
     }
 
     const cleanFilter = async () => {
         try {
-            axios.get(makeApiNoteRoute()).then((response) => {
-                setNotes(response.data)
-                reset()
-            })
+            console.log("ola")
+            triggerGetAll(undefined)
+            reset()
         } catch(error) {
+            console.log(error)
         }
     }
-     
-    useEffect(() => {
-        try {
-            axios.get(makeApiNoteRoute()).then((response) => {
-                setNotes(response.data)
-            })
-        } catch(error) {
-        }
-        
-    }, [])
 
     return (
         <>       
