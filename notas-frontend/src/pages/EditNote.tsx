@@ -1,10 +1,8 @@
-import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-<<<<<<< HEAD
 import { useEffect, useState } from 'react';
-import { InputLabel, TextField } from '@mui/material';
+import { Button, ButtonGroup, InputLabel, TextField, Typography } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import type { NotePutForm } from '../schema/notePutSchema';
 import NotePutSchema from '../schema/notePutSchema';
@@ -12,21 +10,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useUpdateNoteMutation } from '../store/noteApi';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../store/store';
-=======
-import { useState } from 'react';
-import axios from 'axios';
-import { ButtonGroup, InputLabel    , TextField, Typography } from '@mui/material';
-import { useNavigate } from 'react-router';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { makeApiNoteRoute } from '../routes/constRoutes';
-import NotePutSchema, { type NotePutForm } from '../schema/notePutSchema';
-type Note = {
-    title: string,
-    description: string,
-    id: string
-}
->>>>>>> dev
 
 export default function EditNote() {
   
@@ -50,9 +33,11 @@ export default function EditNote() {
     if (!note) {
         return "carregando"
     }
+    
 
     const handleClickOpen = () => {
         setOpen(true);
+        
     };
 
     const handleClose = () => {
@@ -67,12 +52,14 @@ export default function EditNote() {
     return (
         <>
             <Button variant="outlined" onClick={handleClickOpen}>
-                Editar
+                <Typography>
+                    Editar
+                </Typography>
             </Button>
             <Dialog open={open} onClose={handleClose} sx={{ width: '100%'}} fullWidth={true}>
                 <DialogTitle>EDITAR NOTA</DialogTitle>
                 <DialogContent>
-                    <form onSubmit={handleSubmit(onSubmit)}>
+                    <form onSubmit={handleSubmit(onSubmit)} action="/">
                         <InputLabel>Titulo*</InputLabel>
                         <TextField
                             autoFocus
@@ -80,7 +67,8 @@ export default function EditNote() {
                             id="title"
                             type="text"
                             fullWidth
-                           { ...register("title", {required: true})}
+                            { ...register("title", {required: true})}
+
                         />
 
                         <InputLabel>Descrição*</InputLabel>
@@ -93,10 +81,15 @@ export default function EditNote() {
                             maxRows={10}
                             minRows={3}
                             multiline
-                            {...register("description", {required: true})}
+                            { ...register("description", {required: true})}
                         />
-                        <Button type="submit"> Editar </Button>
-                        <Button onClick={handleClose}> Cancelar </Button>
+                        <br/>
+                        <br/>
+                        <ButtonGroup>
+                            <Button type="submit"> Editar </Button>
+                            <Button onClick={handleClose}> Cancelar </Button>
+                        </ButtonGroup>
+                        
                     </form>          
                 </DialogContent>
             </Dialog>
