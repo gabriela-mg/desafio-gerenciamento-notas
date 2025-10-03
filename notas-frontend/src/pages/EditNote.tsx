@@ -2,6 +2,7 @@ import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
+<<<<<<< HEAD
 import { useEffect, useState } from 'react';
 import { InputLabel, TextField } from '@mui/material';
 import { useForm } from 'react-hook-form';
@@ -11,6 +12,21 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useUpdateNoteMutation } from '../store/noteApi';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../store/store';
+=======
+import { useState } from 'react';
+import axios from 'axios';
+import { ButtonGroup, InputLabel    , TextField, Typography } from '@mui/material';
+import { useNavigate } from 'react-router';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { makeApiNoteRoute } from '../routes/constRoutes';
+import NotePutSchema, { type NotePutForm } from '../schema/notePutSchema';
+type Note = {
+    title: string,
+    description: string,
+    id: string
+}
+>>>>>>> dev
 
 export default function EditNote() {
   

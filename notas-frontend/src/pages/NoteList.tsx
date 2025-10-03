@@ -3,9 +3,12 @@ import { Link } from 'react-router';
 import { Box } from '@mui/system';
 import type { Note } from '../type/Note';
 import { makeFrontNoteRoute } from '../routes/constRoutes';
+<<<<<<< HEAD
 import { useSelector } from 'react-redux';
 import { type RootState } from '../store/store';
 import { useGetNotesQuery } from '../store/noteApi';
+=======
+>>>>>>> dev
 
 function NoteList() {
 

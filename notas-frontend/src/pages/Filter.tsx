@@ -1,5 +1,15 @@
 import { Button, Grid, TextField, Typography } from "@mui/material"
+<<<<<<< HEAD
 import { Controller, useForm } from "react-hook-form";
+=======
+import axios from "axios";
+import { useEffect, useState } from "react";
+import NoteList from "./NoteList";
+import NewNote from "./NewNote";
+import { makeApiNoteRoute } from "../routes/constRoutes";
+import type { Note } from "../type/Note";
+import { useForm } from "react-hook-form";
+>>>>>>> dev
 import type { NoteGetForm } from "../schema/noteGetSchema";
 import NoteGetSchema from "../schema/noteGetSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
