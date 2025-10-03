@@ -1,4 +1,7 @@
 import { Button, Grid, TextField, Typography } from "@mui/material"
+<<<<<<< HEAD
+import { Controller, useForm } from "react-hook-form";
+=======
 import axios from "axios";
 import { useEffect, useState } from "react";
 import NoteList from "./NoteList";
@@ -6,56 +9,59 @@ import NewNote from "./NewNote";
 import { makeApiNoteRoute } from "../routes/constRoutes";
 import type { Note } from "../type/Note";
 import { useForm } from "react-hook-form";
+>>>>>>> dev
 import type { NoteGetForm } from "../schema/noteGetSchema";
 import NoteGetSchema from "../schema/noteGetSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { DatePicker } from '@mui/x-date-pickers/DatePicker'
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import NewNote from "./NewNote";
+import NoteList from "./NoteList";
+import dayjs from "dayjs";
+import { useLazyGetNotesQuery } from "../store/noteApi";
 
 function Filter() {
 
-    const { register, handleSubmit, reset } = useForm<NoteGetForm>({
+    const { register, handleSubmit, reset, control } = useForm<NoteGetForm>({
         defaultValues: {text: "", startDate: "", endDate: ""},
         resolver: zodResolver(NoteGetSchema)
     })
 
-    const [notes, setNotes] = useState<Note[]>([])
-
+    const [triggerGetAll, { isFetching, error}] = useLazyGetNotesQuery()
 
     const filterNotes  = (data: NoteGetForm) => {
         const {text, startDate, endDate } = data
         try {
-            axios.get(makeApiNoteRoute(), { params: {
+            console.log("oi")
+            const params ={
                 text: text || undefined, 
                 startDate: startDate || undefined, 
                 endDate: endDate || undefined
-            }}).then((response) => {
-                setNotes(response.data)
-            })
+            }
+            triggerGetAll(params)
         } catch(error) {
+            console.log(error)
         }
     }
 
     const cleanFilter = async () => {
         try {
-            axios.get(makeApiNoteRoute()).then((response) => {
-                setNotes(response.data)
-                reset()
-            })
+            console.log("ola")
+            triggerGetAll(undefined)
+            reset()
         } catch(error) {
+            console.log(error)
         }
     }
-     
-    useEffect(() => {
-        try {
-            axios.get(makeApiNoteRoute()).then((response) => {
-                setNotes(response.data)
-            })
-        } catch(error) {
-        }
-        
-    }, [])
+
+    if(isFetching) {
+        <Typography> Carregando</Typography>
+    }
+
+    if(error) {
+        <Typography color="red"> Erro </Typography>
+    }
 
     return (
         <>       
@@ -75,17 +81,32 @@ function Filter() {
                     sx={{width: '20%'}}
                     { ...register("text", {required: false})}
                 />
+                
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker
-                        autoFocus
-                        { ...register("startDate")}
-                        sx={{width: '10%'}}
+                    <Controller
+                        name="startDate"
+                        control={control}
+                        render={({ field }) => (
+                        <DatePicker
+                            {...field}
+                            value={field.value ? dayjs(field.value) : null} 
+                            onChange={(date) => field.onChange(date ? date.toISOString() : null)} 
+                            format="DD/MM/YYYY"
+                        />
+                        )}
                     />
                     <Typography> até </Typography>
-                    <DatePicker
-                        autoFocus
-                        { ...register("endDate")}
-                        sx={{width: '10%'}}
+                     <Controller
+                        name="endDate"
+                        control={control}
+                        render={({ field }) => (
+                        <DatePicker
+                            {...field}
+                            value={field.value ? dayjs(field.value) : null} 
+                            onChange={(date) => field.onChange(date ? date.toISOString() : null)}
+                            format="DD/MM/YYYY" 
+                        />
+                        )}
                     />
                 </LocalizationProvider>
 
@@ -98,7 +119,7 @@ function Filter() {
             <br/>
             <br/>
             
-            <NoteList notes={notes}/>
+            <NoteList/>
         </>
     )
 }

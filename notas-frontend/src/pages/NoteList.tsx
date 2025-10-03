@@ -3,10 +3,19 @@ import { Link } from 'react-router';
 import { Box } from '@mui/system';
 import type { Note } from '../type/Note';
 import { makeFrontNoteRoute } from '../routes/constRoutes';
+<<<<<<< HEAD
+import { useSelector } from 'react-redux';
+import { type RootState } from '../store/store';
+import { useGetNotesQuery } from '../store/noteApi';
+=======
+>>>>>>> dev
 
-function NoteList({ notes }: { notes: Note[] }) {
+function NoteList() {
 
-     function formatDate(data: string) {
+    useGetNotesQuery(undefined)
+    const notes = useSelector((state: RootState) => state.notes.notes)
+
+    function formatDate(data: string) {
         const newDate = new Date(data)
         const formattedDate = newDate.toLocaleDateString()
         return formattedDate
@@ -24,7 +33,7 @@ function NoteList({ notes }: { notes: Note[] }) {
                 { !notes || notes.length === 0 ? (
                         <Typography> Nenhuma nota encontrada</Typography>
                     ) : (
-                        notes.map( (note, index) =>                        
+                        notes.map( (note: Note, index: number) =>                        
                             <Card sx={{width: '30%'}} key={index}>
                                 <CardContent>
                                     <Box 
@@ -47,7 +56,7 @@ function NoteList({ notes }: { notes: Note[] }) {
                                         { note.description }
                                     </Typography>
                                 </CardContent>
-                                <CardActions>"/
+                                <CardActions>
                                     <Link to={makeFrontNoteRoute(note.id)}>
                                         <Typography> Ver mais </Typography>
                                     </Link>                

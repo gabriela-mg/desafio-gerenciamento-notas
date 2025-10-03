@@ -1,27 +1,36 @@
-// Need to use the React-specific entry point to import createApi
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import type { Note } from '../type/Note'
-import { makeApiNoteRoute } from '../routes/constRoutes'
-import type { NoteGetForm } from '../schema/noteGetSchema'
+import { createSlice } from '@reduxjs/toolkit'
+import { noteApi } from './noteApi'
 
-// Define a service using a base URL and expected endpoints
-export const noteApi = createApi({
-  reducerPath: 'noteApi',
-  baseQuery: fetchBaseQuery({ baseUrl: makeApiNoteRoute() }),
-  endpoints: (builder) => ({
-    getNotebyId: builder.query<Note, string>({
-      query: (id) => `/${id}`,
+type state = {
+    notes: Note[],
+    note: Note | undefined
+}
+
+const initialState: state = {
+    notes: [],
+    note: undefined
+}
+
+export const noteSlice = createSlice({
+    name: "notes",
+    initialState,
+    reducers: {
+    
+  },
+  extraReducers: (builder) => {
+    builder.addMatcher(noteApi.endpoints.getNotes.matchFulfilled, (state, action) => {
+        state.notes = action.payload
     }),
-    getNotesByFilter: builder.query<Note, NoteGetForm>({
-      query: (arg) => {
-        return {
-          params: arg
-        }
-      }
+    builder.addMatcher(noteApi.endpoints.getNoteById.matchFulfilled, (state, action) => {
+        state.note = action.payload
+        console.log("get ", action.payload)
     }),
-  }),
+    builder.addMatcher(noteApi.endpoints.updateNote.matchFulfilled, (state, action) => {
+        state.note = action.payload
+    })
+  }
 })
 
-// Export hooks for usage in functional components, which are
-// auto-generated based on the defined endpoints
-export const { useGetNotebyIdQuery } = noteApi
+export default noteSlice.reducer
+

@@ -1,10 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit'
-import notesReducer from './noteSlice'
+import noteReducer from './noteSlice'
+import { noteApi } from './noteApi'
 
 export const store = configureStore({
   reducer: {
-    notes: notesReducer
-  }
+    notes: noteReducer,
+    [noteApi.reducerPath]: noteApi.reducer,
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(noteApi.middleware),
 })
 
 export type AppStore = typeof store
