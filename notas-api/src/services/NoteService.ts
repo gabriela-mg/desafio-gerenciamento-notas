@@ -35,9 +35,9 @@ export class NoteService {
     public async updateNote(id: string, title: string, description: string) {
         const idNumber = Number(id)
 
-        const answer = await this.noteRepository.updateNote(idNumber, title, description)
+        const note = await this.noteRepository.updateNote(idNumber, title, description)
 
-        return answer
+        return note
     }
 
     public async deleteNote(id: string) {
