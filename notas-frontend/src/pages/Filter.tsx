@@ -9,7 +9,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import NewNote from "./NewNote";
 import NoteList from "./NoteList";
 import dayjs from "dayjs";
-import { useLazyGetNoteQuery, useLazyGetNotesByFilterQuery } from "../store/noteSlice";
+import { useLazyGetNotesQuery } from "../store/noteApi";
 
 function Filter() {
 
@@ -18,9 +18,7 @@ function Filter() {
         resolver: zodResolver(NoteGetSchema)
     })
 
-    const [triggerGetByFilter, { isFetching: isLoadingFilter }] = useLazyGetNotesByFilterQuery()
-    const [triggerGetAll, { isFetching: isLoadingAll }] = useLazyGetNoteQuery()
-
+    const [triggerGetAll, { isFetching, error}] = useLazyGetNotesQuery()
 
     const filterNotes  = (data: NoteGetForm) => {
         const {text, startDate, endDate } = data
@@ -31,7 +29,7 @@ function Filter() {
                 startDate: startDate || undefined, 
                 endDate: endDate || undefined
             }
-            triggerGetByFilter(params)
+            triggerGetAll(params)
         } catch(error) {
             console.log(error)
         }
@@ -45,6 +43,14 @@ function Filter() {
         } catch(error) {
             console.log(error)
         }
+    }
+
+    if(isFetching) {
+        <Typography> Carregando</Typography>
+    }
+
+    if(error) {
+        <Typography color="red"> Erro </Typography>
     }
 
     return (
@@ -73,8 +79,9 @@ function Filter() {
                         render={({ field }) => (
                         <DatePicker
                             {...field}
-                            value={field.value ? dayjs(field.value) : null} // Ensure value is a Dayjs object or null
-                            onChange={(date) => field.onChange(date ? date.toISOString() : null)} // Store as ISO string
+                            value={field.value ? dayjs(field.value) : null} 
+                            onChange={(date) => field.onChange(date ? date.toISOString() : null)} 
+                            format="DD/MM/YYYY"
                         />
                         )}
                     />
@@ -85,8 +92,9 @@ function Filter() {
                         render={({ field }) => (
                         <DatePicker
                             {...field}
-                            value={field.value ? dayjs(field.value) : null} // Ensure value is a Dayjs object or null
-                            onChange={(date) => field.onChange(date ? date.toISOString() : null)} // Store as ISO string
+                            value={field.value ? dayjs(field.value) : null} 
+                            onChange={(date) => field.onChange(date ? date.toISOString() : null)}
+                            format="DD/MM/YYYY" 
                         />
                         )}
                     />

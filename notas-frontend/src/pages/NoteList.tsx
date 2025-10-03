@@ -5,13 +5,12 @@ import type { Note } from '../type/Note';
 import { makeFrontNoteRoute } from '../routes/constRoutes';
 import { useSelector } from 'react-redux';
 import { type RootState } from '../store/store';
-import { useGetNoteQuery } from '../store/noteSlice';
+import { useGetNotesQuery } from '../store/noteApi';
 
 function NoteList() {
 
-   useGetNoteQuery(undefined)
+    useGetNotesQuery(undefined)
     const notes = useSelector((state: RootState) => state.notes.notes)
-    console.log(notes)
 
     function formatDate(data: string) {
         const newDate = new Date(data)

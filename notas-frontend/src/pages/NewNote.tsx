@@ -3,14 +3,12 @@ import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useState } from 'react';
-import axios from 'axios';
-import { InputLabel, TextField } from '@mui/material';
-import {  useNavigate } from 'react-router';
-import { makeApiNoteRoute } from '../routes/constRoutes';
+import { InputLabel, TextField, Typography } from '@mui/material';
 import { useForm } from "react-hook-form";
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { NotePostForm } from '../schema/notePostSchema';
 import NotePostSchema from '../schema/notePostSchema';
+import { useAddNoteMutation, useLazyGetNotesQuery } from '../store/noteApi';
 
 export default function NewNote() {
     const [open, setOpen] = useState(false);
@@ -19,9 +17,10 @@ export default function NewNote() {
         resolver: zodResolver(NotePostSchema)
     })
 
-    
-    const navigate = useNavigate()
+    const [triggerGetAll, { isFetching, error }] = useLazyGetNotesQuery()
 
+    const [addNote, { }] = useAddNoteMutation()
+    
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -30,10 +29,18 @@ export default function NewNote() {
         setOpen(false);
     };
 
-  const onSubmit = (data: any) => {
-        axios.post(makeApiNoteRoute(), data).then(() => {
-        })
+    const onSubmit = async (data: any) => {
+        await addNote({title: data.title, description: data.description})
+        triggerGetAll(undefined)
         handleClose();
+    }
+
+    if(isFetching) {
+        <Typography> Carregando</Typography>
+    }
+
+    if(error) {
+        <Typography color="red"> Erro </Typography>
     }
 
     return (

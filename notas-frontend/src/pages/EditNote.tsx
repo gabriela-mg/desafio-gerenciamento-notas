@@ -2,55 +2,61 @@ import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { useState } from 'react';
-import axios from 'axios';
-import { ButtonGroup, InputLabel    , TextField, Typography } from '@mui/material';
-import { useNavigate } from 'react-router';
-import { makeApiNoteRoute } from '../routes/constRoutes';
+import { useEffect, useState } from 'react';
+import { InputLabel, TextField } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import type { NotePutForm } from '../schema/notePutSchema';
 import NotePutSchema from '../schema/notePutSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import type { Note } from '../type/Note';
+import { useUpdateNoteMutation } from '../store/noteApi';
+import { useSelector } from 'react-redux';
+import type { RootState } from '../store/store';
 
-export default function EditNote({note}: {note: Note}) {
+export default function EditNote() {
   
     const [open, setOpen] = useState(false)
 
-    const { register, handleSubmit } = useForm<NotePutForm>({
-        resolver: zodResolver(NotePutSchema)
+    const note = useSelector((state: RootState) => state.notes.note)
+
+    const { register, handleSubmit, setValue } = useForm<NotePutForm>({
+        resolver: zodResolver(NotePutSchema),
+        defaultValues: {title: "", description: ""}
     })
 
-    
-    const navigate = useNavigate()
+    useEffect(() => {
+        if(!note) return
+        setValue("title", note.title)
+        setValue("description", note.description)
+    }, [note])
+
+    const [updateNote] = useUpdateNoteMutation()
+   
+    if (!note) {
+        return "carregando"
+    }
 
     const handleClickOpen = () => {
         setOpen(true);
-        
     };
 
     const handleClose = () => {
         setOpen(false);
     };
 
-    const onSubmit = (data: any) => {        
-        axios.put(makeApiNoteRoute(note.id.toString()), data).then(() => {
-            navigate(0)
-        })
+    const onSubmit = async (data: any) => {    
+        await updateNote({id: note.id, title: data.title, description: data.description})
         handleClose();
     };
 
     return (
         <>
             <Button variant="outlined" onClick={handleClickOpen}>
-                <Typography>
-                    Editar
-                </Typography>
+                Editar
             </Button>
             <Dialog open={open} onClose={handleClose} sx={{ width: '100%'}} fullWidth={true}>
                 <DialogTitle>EDITAR NOTA</DialogTitle>
                 <DialogContent>
-                    <form onSubmit={handleSubmit(onSubmit)} action="/">
+                    <form onSubmit={handleSubmit(onSubmit)}>
                         <InputLabel>Titulo*</InputLabel>
                         <TextField
                             autoFocus
@@ -58,8 +64,7 @@ export default function EditNote({note}: {note: Note}) {
                             id="title"
                             type="text"
                             fullWidth
-                            { ...register("title", {required: true})}
-
+                           { ...register("title", {required: true})}
                         />
 
                         <InputLabel>Descrição*</InputLabel>
@@ -72,15 +77,10 @@ export default function EditNote({note}: {note: Note}) {
                             maxRows={10}
                             minRows={3}
                             multiline
-                            { ...register("description", {required: true})}
+                            {...register("description", {required: true})}
                         />
-                        <br/>
-                        <br/>
-                        <ButtonGroup>
-                            <Button type="submit"> Editar </Button>
-                            <Button onClick={handleClose}> Cancelar </Button>
-                        </ButtonGroup>
-                        
+                        <Button type="submit"> Editar </Button>
+                        <Button onClick={handleClose}> Cancelar </Button>
                     </form>          
                 </DialogContent>
             </Dialog>
