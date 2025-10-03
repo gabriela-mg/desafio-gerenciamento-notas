@@ -47,9 +47,10 @@ export class NoteController {
             const title = req.body.title
             const description = req.body.description
 
-            const answer = await this.noteService.updateNote(id, title, description)
+            const note = await this.noteService.updateNote(id, title, description)
 
-            res.sendStatus(answer ? 200 : 404)
+            res.send(note)
+            res.status(200)        
         } catch(error) {
             res.sendStatus(500)
         }

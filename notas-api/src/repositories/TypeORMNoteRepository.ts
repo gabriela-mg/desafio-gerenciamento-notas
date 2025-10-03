@@ -48,13 +48,9 @@ export class TypeORMNoteRepository implements NoteRepository {
     }
 
     public async updateNote(id: number, title: string, description: string) {
-        const updateResult = await this.noteRepository.update(id, {title: title, description: description})
+        const updateResult = await this.noteRepository.save({id: id, title: title, description: description})
         
-        if(updateResult.affected === null) {
-            return false
-        } else {
-            return true
-        }
+        return updateResult
     }
 
     public async deleteNote(id: number) {

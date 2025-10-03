@@ -14,7 +14,7 @@ export interface NoteRepository {
 
     createNote(note: Note) : Promise<Note>
 
-    updateNote(id: number, title: string, description: string): Promise<boolean>
+    updateNote(id: number, title: string, description: string): Promise<Note>
 
     deleteNote(id: number): Promise<boolean>
 }
