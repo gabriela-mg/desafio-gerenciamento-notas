@@ -1,8 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm"
-import { Note } from "./Note.entity.ts"
+import { NoteEntity } from "./Note.entity.ts"
 
 @Entity("image")
-export class Image {
+export class ImageEntity {
 
     @PrimaryGeneratedColumn({type:"int"})
     id: number
@@ -10,7 +10,7 @@ export class Image {
     @Column({type:"varchar", length:"50", nullable:false})
     address: string
 
-    @ManyToOne(() => Note, (note) => note.images)
-    note: Note
+    @ManyToOne(() => NoteEntity, (note) => note.images)
+    note: NoteEntity
 
 }

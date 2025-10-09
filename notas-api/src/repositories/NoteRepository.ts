@@ -1,5 +1,3 @@
-import { DataSource, SelectQueryBuilder } from "typeorm"
-
 type Note = {
     title: string,
     description: string,

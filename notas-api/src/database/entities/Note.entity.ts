@@ -1,8 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany } from "typeorm"
-import { Image } from "./Image.entity.ts"
+import { ImageEntity } from "./Image.entity.ts"
 
 @Entity("note")
-export class Note {
+export class NoteEntity {
 
     @PrimaryGeneratedColumn({type:"int"})
     id: number
@@ -16,7 +16,7 @@ export class Note {
     @CreateDateColumn()
     date: Date
 
-    @OneToMany(() => Image, (image) => image.note)
-    images: Image[]
+    @OneToMany(() => ImageEntity, (image) => image.note)
+    images: ImageEntity[]
 
 }
