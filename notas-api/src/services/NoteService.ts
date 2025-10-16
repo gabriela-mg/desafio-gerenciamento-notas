@@ -1,7 +1,7 @@
-import { ParsedQs } from "qs"
-import { Note } from "../database/entities/Note.entity"
+import { Readable } from "stream"
+import { NoteEntity } from "../database/entities/Note.entity"
 import { NoteRepository } from "../repositories/NoteRepository"
-import { start } from "repl"
+import { ImageService } from "./ImageService"
 
 export class NoteService {
 
@@ -25,11 +25,8 @@ export class NoteService {
         return note
     }
 
-    public async addNote(title: string, description: string) {
-        const note = new Note()    
-        note.title = title
-        note.description = description
-        await this.noteRepository.createNote(note)
+    public async addNote(title: string, description: string) {   
+       return await this.noteRepository.createNote(title, description)
     }
 
     public async updateNote(id: string, title: string, description: string) {
