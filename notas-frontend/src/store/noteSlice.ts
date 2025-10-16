@@ -24,7 +24,6 @@ export const noteSlice = createSlice({
     }),
     builder.addMatcher(noteApi.endpoints.getNoteById.matchFulfilled, (state, action) => {
         state.note = action.payload
-        console.log("get ", action.payload)
     }),
     builder.addMatcher(noteApi.endpoints.updateNote.matchFulfilled, (state, action) => {
         state.note = action.payload
