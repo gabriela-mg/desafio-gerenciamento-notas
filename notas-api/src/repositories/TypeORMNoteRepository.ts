@@ -42,12 +42,12 @@ export class TypeORMNoteRepository implements NoteRepository {
         return note
     }
 
-    public async createNote(note: NoteEntity) {
-        const newnote = await this.noteRepository.save(note)
+    public async createNote(title: string, description: string) {
+        const newnote = await this.noteRepository.save({title, description})
         return newnote
     }
 
-    public async updateNote(id: number, title: string, description: string) {
+    public async updateNote(id: number, title: string, description: string): Promise<NoteEntity> {
         const updateResult = await this.noteRepository.save({id: id, title: title, description: description})
         
         return updateResult
