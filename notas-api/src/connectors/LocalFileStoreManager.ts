@@ -5,21 +5,22 @@ import { FileStorageManager } from './FileStoreManager';
 
 export class LocalFileStoreManager implements FileStorageManager {
 
-    async read(key: string) {
+    public async read(key: string) {
         const pathFile = this.createPathFile(key)
 
         const file = await this.readFile(pathFile)
-        
-        return file
+        if(file) return file 
+        else return null
     }
 
-    async save(key: string, file: Readable) {
+    public async save(key: string, file: Readable) {
+        console.log("local file")
         const pathFile = this.createPathFile(key)
         const answer = this.saveFile(pathFile, file)
         return answer
     }
 
-    async delete(pathFile: string) {
+    public async delete(pathFile: string) {
         return true
     }
 
