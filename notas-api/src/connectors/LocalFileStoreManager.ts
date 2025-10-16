@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import { Readable } from 'stream';
 import { FileStorageManager } from './FileStoreManager';
+import * as  path from 'path';
 
 
 export class LocalFileStoreManager implements FileStorageManager {
@@ -14,9 +15,8 @@ export class LocalFileStoreManager implements FileStorageManager {
     }
 
     public async save(key: string, file: Readable) {
-        console.log("local file")
         const pathFile = this.createPathFile(key)
-        const answer = this.saveFile(pathFile, file)
+        const answer = await this.saveFile(pathFile, file)
         return answer
     }
 
@@ -34,12 +34,21 @@ export class LocalFileStoreManager implements FileStorageManager {
             const writeStream = fs.createWriteStream(pathFile)
             stream.pipe(writeStream)
             writeStream.on('finish', () => {resolve(true)})
-            writeStream.on('error', () => {resolve(false)})
+            writeStream.on('error', (error) => {
+                console.log(error)
+                resolve(false)})
         })
     }
 
     private createPathFile(key: string) :string {
-        const pathFile = "./temp/" + key
+        const pathFile = "./temp/" + key + ".png"
+
+        const dirPath = path.dirname(pathFile);
+
+
+        if (!fs.existsSync(dirPath)){
+            fs.mkdirSync(dirPath, { recursive: true });
+        }
 
         return pathFile
     }

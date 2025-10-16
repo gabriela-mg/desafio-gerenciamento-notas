@@ -29,7 +29,6 @@ export class ImageRepostitory {
 
     public async saveImage(key: string, note: NoteEntity) {
 
-        console.log("repository")
         const newImage = new ImageEntity()
 
         newImage.address = key

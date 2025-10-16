@@ -7,7 +7,7 @@ export class ImageEntity {
     @PrimaryGeneratedColumn({type:"int"})
     id: number
 
-    @Column({type:"varchar", length:"50", nullable:false})
+    @Column({type:"varchar", length:"300", nullable:false})
     address: string
 
     @ManyToOne(() => NoteEntity, (note) => note.images)

@@ -34,26 +34,19 @@ export class ImageService {
     }
 
     public async addImage(image: Readable, id: string) {
-        console.log("service")
         const noteId = Number(id)
         const newNote = new NoteEntity()
         const note = await this.noteRepo.findNoteById(noteId)
-
-        console.log("service note")
 
         newNote.id = note.id
         newNote.title = note.title
         newNote.description = note.description
 
-        console.log("service note")
-
-        console.log(image)
-
-        console.log("oi")
         const key = this.generateKey(id)
-        console.log("save")
-        await this.fileStore.save(key, image)
-        await this.imageRepo.saveImage(key, newNote) 
+        const answer = await this.fileStore.save(key, image)
+        if (answer) {
+            await this.imageRepo.saveImage(key, newNote) 
+        }
     }
 
     public async deleteImage(id: string) {
@@ -61,7 +54,7 @@ export class ImageService {
     }
 
     private generateKey(noteId: string) {
-        const key = "note/" + noteId + "/" + nanoid
+        const key = "note/" + noteId + "/" + nanoid()
 
         return key
     }

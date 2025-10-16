@@ -32,7 +32,6 @@ export class ImageController {
     }
 
     public addImage = async (req: Request, res: Response) => {
-        console.log("controller")
                 req.headers['Content-Type'] = req.headers['content-type'];
 
         const bb = busboy({ headers: req.headers });
