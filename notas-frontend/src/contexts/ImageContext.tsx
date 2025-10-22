@@ -1,5 +1,4 @@
 import { createContext, useState, type ReactNode } from 'react';
-import Home from '../pages/Home';
 
 interface ImageContextType {
     images: File[]
