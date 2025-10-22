@@ -10,7 +10,7 @@ const AppDataSource = new DataSource({
     username: "teste",
     password: "teste",
     database: "teste",
-    synchronize: false,
+    synchronize: true,
     logging: false,
     entities: [NoteEntity, ImageEntity],
     migrations: ['./migrations/*.ts'],

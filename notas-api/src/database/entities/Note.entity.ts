@@ -16,7 +16,7 @@ export class NoteEntity {
     @CreateDateColumn()
     date: Date
 
-    @OneToMany(() => ImageEntity, (image) => image.note)
+    @OneToMany(() => ImageEntity, (image) => image.note,  { onDelete: "CASCADE"})
     images: ImageEntity[]
 
 }

@@ -10,7 +10,7 @@ export class ImageEntity {
     @Column({type:"varchar", length:"300", nullable:false})
     address: string
 
-    @ManyToOne(() => NoteEntity, (note) => note.images)
+    @ManyToOne(() => NoteEntity, (note) => note.images, {onDelete: "CASCADE"})
     note: NoteEntity
 
 }

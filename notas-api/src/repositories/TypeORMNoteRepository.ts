@@ -38,7 +38,7 @@ export class TypeORMNoteRepository implements NoteRepository {
                 id: id
             }
         })
-
+        
         return note
     }
 

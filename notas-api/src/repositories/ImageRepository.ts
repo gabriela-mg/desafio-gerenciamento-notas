@@ -1,6 +1,7 @@
 import { ImageEntity } from "../database/entities/Image.entity.ts";
 import AppDataSource from "../database/data-source.ts";
 import { NoteEntity } from "../database/entities/Note.entity.ts";
+import { Like } from "typeorm";
 
 export class ImageRepostitory {
 
@@ -16,16 +17,16 @@ export class ImageRepostitory {
         return images
     }
 
-    /*
-    public async findImagebyId(id: number): Promise<ImageEntity> {
+    
+    public async findImagebyKey(key: string): Promise<ImageEntity> {
         const image = await this.imageRepository.findOne({
             where: {
-                id: id
+                address: Like("%"+ key +"%") 
             }
         })
 
         return image
-    }*/
+    }
 
     public async saveImage(key: string, note: NoteEntity) {
 
