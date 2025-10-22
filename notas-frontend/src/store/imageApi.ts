@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { makeApiNoteRoute } from "../routes/constRoutes";
+import { BASE_API_URL } from "../routes/constRoutes";
 
 type Image = {
     id: number | undefined,
@@ -8,11 +8,11 @@ type Image = {
 
 export const imageApi = createApi({
     reducerPath: 'imageApi',
-    baseQuery: fetchBaseQuery({ baseUrl: makeApiNoteRoute() }),
+    baseQuery: fetchBaseQuery({ baseUrl: BASE_API_URL }),
     endpoints: (builder) => ({
-        getImages: builder.query<File[], number>({ 
+        getImages: builder.query<string[], string>({ 
             query: (id) => ({ 
-                url: `/${id}/image` , 
+                url: `/note/${id}/image` , 
                 method: 'get',
             }),
         }),
@@ -24,12 +24,20 @@ export const imageApi = createApi({
                     formData.append(element.name, element)
                 });
                 return {
-                    url: `/${id}/image`,
+                    url: `/note/${id}/image`,
                     method: 'POST',
                     body: formData,
                     formData: true,
                 }
             },
+        }),
+        getOneImage: builder.query<File, string>({ 
+            query: (id) => ({ 
+                url: `/${id}` , 
+                method: 'get',
+                responseHandler: async (response) =>
+                    URL.createObjectURL(await response.blob()),
+                }),
         }),
         /*deleteImage: builder.mutation<{ success: boolean; id: number }, number>({
             query(id) {
@@ -47,4 +55,5 @@ export const {
     useGetImagesQuery,
     useLazyGetImagesQuery,
     useAddImageMutation,
+    useLazyGetOneImageQuery
 } = imageApi

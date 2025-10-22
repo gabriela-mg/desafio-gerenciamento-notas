@@ -9,14 +9,14 @@ import type { RootState } from '../store/store';
 import { useContext, useEffect, useState } from 'react';
 import StandardImageList from '../components/StandardImageList';
 import InputImage from '../components/InputImage';
-import { ImageContext, ImageProvider } from '../contexts/ImageContext';
+import { ImageContext } from '../contexts/ImageContext';
 import { useLazyGetImagesQuery, useLazyGetOneImageQuery } from '../store/imageApi';
 function NoteCard() {
 
     const params = useParams()
     const navigate = useNavigate();
         
-    const { cleanImages, changeImages } = useContext(ImageContext);
+    const { cleanImages } = useContext(ImageContext);
 
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false)
     const [openImageInput, setOpenImageInput] = useState(false)

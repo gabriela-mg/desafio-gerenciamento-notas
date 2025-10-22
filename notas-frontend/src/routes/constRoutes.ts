@@ -1,7 +1,7 @@
-export const BASE_API_URL = "http://localhost:3000/"
+export const BASE_API_URL = "http://localhost:3000/api"
 
 export function makeApiNoteRoute(noteId?: string): string {
-    const apiNoteRoute = BASE_API_URL + "api/note/" + (noteId ?? "")
+    const apiNoteRoute = BASE_API_URL + "/note/" + (noteId ?? "")
     return apiNoteRoute
 }
 
