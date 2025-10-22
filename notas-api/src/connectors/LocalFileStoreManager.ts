@@ -41,10 +41,9 @@ export class LocalFileStoreManager implements FileStorageManager {
     }
 
     private createPathFile(key: string) :string {
-        const pathFile = "./temp/" + key + ".png"
+        const pathFile = "./temp/" + key 
 
         const dirPath = path.dirname(pathFile);
-
 
         if (!fs.existsSync(dirPath)){
             fs.mkdirSync(dirPath, { recursive: true });
