@@ -6,8 +6,9 @@ import type { Note } from '../type/Note'
 export const noteApi = createApi({
     reducerPath: 'noteApi',
     baseQuery: fetchBaseQuery({ baseUrl: makeApiNoteRoute() }),
+    tagTypes: ['Notes'],
     endpoints: (builder) => ({
-        getNoteById: builder.query<Note, string | undefined>({
+        getNoteById: builder.query<Note, string>({
             query: (id) => ({ 
                 url: `/${id}` , 
                 method: 'get',
@@ -18,7 +19,8 @@ export const noteApi = createApi({
                 url: '/' , 
                 method: 'get',
                 params: params
-            }) 
+            }),
+            providesTags: ['Notes']
         }),
         addNote: builder.mutation<Note, Partial<Note>>({
             query(body) {
@@ -28,6 +30,7 @@ export const noteApi = createApi({
                     body,
                 }
             },
+            invalidatesTags: ['Notes']
         }),
         updateNote: builder.mutation<Note, Partial<Note>>({
             query(data) {
@@ -38,6 +41,8 @@ export const noteApi = createApi({
                     body,
                 }
             },
+            invalidatesTags: ['Notes']
+
         }),
         deleteNote: builder.mutation<{ success: boolean; id: number }, number>({
             query(id) {
@@ -46,6 +51,7 @@ export const noteApi = createApi({
                     method: 'DELETE',
                 }
             },
+            invalidatesTags: ['Notes']
         }),
     }),
 })
@@ -54,7 +60,8 @@ export const {
     useGetNotesQuery,
     useLazyGetNotesQuery,
     useGetNoteByIdQuery,
+    useLazyGetNoteByIdQuery,
     useAddNoteMutation,
     useUpdateNoteMutation, 
-    useDeleteNoteMutation
+    useDeleteNoteMutation, 
 } = noteApi

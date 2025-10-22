@@ -1,13 +1,13 @@
-import { Note } from "../database/entities/Note.entity.ts";
+import { NoteEntity } from "../database/entities/Note.entity.ts";
 import AppDataSource from "../database/data-source.ts";
 import { NoteRepository } from "./NoteRepository.ts";
 import { Between, Brackets, LessThanOrEqual, Like, MoreThanOrEqual } from "typeorm";
 
 export class TypeORMNoteRepository implements NoteRepository {
 
-    private noteRepository = AppDataSource.getRepository(Note)
+    private noteRepository = AppDataSource.getRepository(NoteEntity)
 
-    public async findNotes(text?: string, startDate?: Date, endDate?: Date): Promise<Note[]> {
+    public async findNotes(text?: string, startDate?: Date, endDate?: Date): Promise<NoteEntity[]> {
         const MAX_DATE = "9999-12-31"
         const MIN_DATE = "1000-01-01"
 
@@ -32,22 +32,22 @@ export class TypeORMNoteRepository implements NoteRepository {
         return notes
     }
 
-    public async findNoteById(id: number): Promise<Note> {
+    public async findNoteById(id: number): Promise<NoteEntity> {
         const note = await this.noteRepository.findOne({
             where: {
                 id: id
             }
         })
-
+        
         return note
     }
 
-    public async createNote(note: Note) {
-        const newnote = await this.noteRepository.save(note)
+    public async createNote(title: string, description: string) {
+        const newnote = await this.noteRepository.save({title, description})
         return newnote
     }
 
-    public async updateNote(id: number, title: string, description: string) {
+    public async updateNote(id: number, title: string, description: string): Promise<NoteEntity> {
         const updateResult = await this.noteRepository.save({id: id, title: title, description: description})
         
         return updateResult

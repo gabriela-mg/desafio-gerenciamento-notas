@@ -1,15 +1,20 @@
 import { Typography } from '@mui/material';
-import Filter from './pages/Filter.tsx';
+import Filter from './Filter.tsx';
+import NoteList from './NoteList.tsx';
+import { ImageProvider } from '../contexts/ImageContext.tsx';
 
 function Home() {
     
-    return(
-        <>
+    return <>
+    <ImageProvider>
         <Typography variant='h2'>Suas notas</Typography>
         
-            <Filter></Filter>
-        </>
-    )
+        <Filter/>
+        <NoteList/>
+    </ImageProvider>
+        
+
+    </>
 }
 
 export default Home

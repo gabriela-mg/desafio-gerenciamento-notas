@@ -1,16 +1,16 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm"
-import { Note } from "./Note.entity.ts"
+import { NoteEntity } from "./Note.entity.ts"
 
 @Entity("image")
-export class Image {
+export class ImageEntity {
 
     @PrimaryGeneratedColumn({type:"int"})
     id: number
 
-    @Column({type:"varchar", length:"50", nullable:false})
+    @Column({type:"varchar", length:"300", nullable:false})
     address: string
 
-    @ManyToOne(() => Note, (note) => note.images)
-    note: Note
+    @ManyToOne(() => NoteEntity, (note) => note.images, {onDelete: "CASCADE"})
+    note: NoteEntity
 
 }

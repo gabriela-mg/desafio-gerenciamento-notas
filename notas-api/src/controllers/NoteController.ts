@@ -62,6 +62,7 @@ export class NoteController {
 
             res.sendStatus(answer ? 200 : 404)
         } catch(error) {
+            console.log(error)
             res.sendStatus(500)
         }
     }
