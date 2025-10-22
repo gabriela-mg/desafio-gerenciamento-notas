@@ -17,7 +17,6 @@ export default function NewNote() {
     const [open, setOpen] = useState(false);
     const { images, cleanImages } = useContext(ImageContext);
 
-
     const { register, handleSubmit, setValue } = useForm<NotePostForm>({
         resolver: zodResolver(NotePostSchema)
     })

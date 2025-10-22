@@ -12,6 +12,7 @@ function InputImage() {
             for (let i = 0; i < selectedFiles.length; i++) {
                 const file = selectedFiles[i];
                 changeImages(file)
+                console.log(file)
             }
         }
     }
