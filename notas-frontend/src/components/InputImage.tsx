@@ -1,9 +1,9 @@
-import { useContext, useState } from "react"
+import { useContext } from "react"
 import { ImageContext } from "../contexts/ImageContext";
 
 
 function InputImage() {
-    const { images, changeImages } = useContext(ImageContext);
+    const { changeImages } = useContext(ImageContext);
 
     function changeImage(event: React.ChangeEvent<HTMLInputElement>) {
         const selectedFiles = event.target.files; 

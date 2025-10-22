@@ -44,9 +44,9 @@ export default function EditNote() {
         setOpen(false);
     };
 
-    const onSubmit = async (data: any) => {    
+    const onSubmit = async (data: {title: string, description: string}) => {    
         await updateNote({id: note.id, title: data.title, description: data.description})
-        handleClose();
+        handleClose()
     };
 
     return (

@@ -7,7 +7,6 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import NewNote from "./NewNote";
-import NoteList from "./NoteList";
 import dayjs from "dayjs";
 import { useLazyGetNotesQuery } from "../store/noteApi";
 
@@ -23,7 +22,6 @@ function Filter() {
     const filterNotes  = (data: NoteGetForm) => {
         const {text, startDate, endDate } = data
         try {
-            console.log("oi")
             const params ={
                 text: text || undefined, 
                 startDate: startDate || undefined, 
@@ -37,7 +35,6 @@ function Filter() {
 
     const cleanFilter = async () => {
         try {
-            console.log("ola")
             triggerGetAll(undefined)
             reset()
         } catch(error) {
@@ -108,9 +105,7 @@ function Filter() {
 
             <br/>
             <br/>
-            
-            <NoteList/>
-        </>
+                    </>
     )
 }
 
