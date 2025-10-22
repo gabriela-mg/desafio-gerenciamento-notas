@@ -5,6 +5,7 @@ import { FileStorageManager } from "../connectors/FileStoreManager"
 import { nanoid } from 'nanoid'
 import { NoteRepository } from "../repositories/NoteRepository"
 import { ReadStream } from "fs"
+import { ImageEntity } from "../database/entities/Image.entity"
 
 export class ImageService {
 
@@ -22,18 +23,24 @@ export class ImageService {
         noteEntity.id = note.id
         noteEntity.title = note.title
         noteEntity.description = note.description
-        
+    
         const imagesEntities = await this.imageRepo.findImages(noteEntity)
-        const images = []
-
-        imagesEntities.map(async (image) => { 
-            images.push(await this.fileStore.read(image.address))
+       
+        const imagesKeys: string[] = []
+        imagesEntities.map((image) => {
+            imagesKeys.push(image.address)
         })
-
-        return images
+        return imagesKeys
     }
 
-    public async addImage(image: Readable, id: string) {
+    public async selectOneImage(key: string) {
+        const imageEntity = await this.imageRepo.findImagebyKey(key)
+        const image = await this.fileStore.read(imageEntity.address)
+
+        return image
+    }
+
+    public async addImage(image: Readable, id: string, mimeType: string) {
         const noteId = Number(id)
         const newNote = new NoteEntity()
         const note = await this.noteRepo.findNoteById(noteId)
@@ -42,7 +49,7 @@ export class ImageService {
         newNote.title = note.title
         newNote.description = note.description
 
-        const key = this.generateKey(id)
+        const key = this.generateKey(id, mimeType)
         const answer = await this.fileStore.save(key, image)
         if (answer) {
             await this.imageRepo.saveImage(key, newNote) 
@@ -53,10 +60,13 @@ export class ImageService {
         
     }
 
-    private generateKey(noteId: string) {
-        const key = "note/" + noteId + "/" + nanoid()
+    private generateKey(noteId: string, mimeType: string) {
+        const type = mimeType.substring(6)
 
+        console.log(type)
+        const key = "note/" + noteId + "/" + nanoid() + "." + type
         return key
     }
+
 
 }

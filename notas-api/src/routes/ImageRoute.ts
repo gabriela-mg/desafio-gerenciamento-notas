@@ -11,10 +11,10 @@ const imageController = new ImageController(imageService)
 
 imageRoutes.get('/note/:id/image', imageController.getImages)
 
-imageRoutes.get('/note/:id/image/:id', imageController.getOneImage)
+imageRoutes.get('/note/:id/:idImage', imageController.getOneImage)
 
 imageRoutes.post('/note/:id/image', imageController.addImage)
 
-imageRoutes.delete('/note/:id/image/:id', imageController.deleteImage)
+imageRoutes.delete('/note/:id/image/:idImage', imageController.deleteImage)
 
 export default imageRoutes
