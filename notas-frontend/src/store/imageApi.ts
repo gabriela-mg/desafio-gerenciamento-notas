@@ -36,7 +36,7 @@ export const imageApi = createApi({
                 url: `/${id}` , 
                 method: 'get',
                 responseHandler: async (response) =>
-                    URL.createObjectURL(await response.blob()),
+                    await response.blob(),
                 }),
         }),
         /*deleteImage: builder.mutation<{ success: boolean; id: number }, number>({

@@ -15,7 +15,7 @@ import { useAddImageMutation } from '../store/imageApi';
 
 export default function NewNote() {
     const [open, setOpen] = useState(false);
-    const { images, cleanImages } = useContext(ImageContext);
+    const { newImages, cleanInputImages } = useContext(ImageContext);
 
     const { register, handleSubmit, setValue } = useForm<NotePostForm>({
         resolver: zodResolver(NotePostSchema)
@@ -31,15 +31,15 @@ export default function NewNote() {
     const handleClose = () => {
         setValue("title", "")
         setValue("description", "")
-        cleanImages()
+        cleanInputImages()
         setOpen(false);
     };
 
     const onSubmit = async (data: {title: string, description: string}) => {
         const answer = await addNote(data)
         const id = answer.data?.id
-        if(images.length > 0) {            
-            await addImage({id, images})
+        if(newImages.length > 0) {            
+            await addImage({id, images: newImages})
         }
         
         handleClose();

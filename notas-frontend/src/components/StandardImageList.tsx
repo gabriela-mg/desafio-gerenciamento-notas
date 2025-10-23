@@ -1,17 +1,16 @@
-import { Box, Button, Grid, Typography } from '@mui/material';
+import { Box, Button, Grid } from '@mui/material';
 import ImageListItem from '@mui/material/ImageListItem';
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { ImageContext } from '../contexts/ImageContext';
 
 export default function StandardImageList() {  
 
-    const { images } = useContext(ImageContext)
-
-    console.log(images)
+    const { noteImages } = useContext(ImageContext)
+    const imagesSRC = noteImages.map((image) => URL.createObjectURL(image))
 
     return (
     <>
-    {images.length > 0 && 
+    {imagesSRC.length > 0 && 
         <Grid container spacing={2} rowSpacing={1} 
             columnSpacing={{ xs: 1, sm: 2, md: 3 }} 
             sx={{
@@ -20,8 +19,7 @@ export default function StandardImageList() {
             }}
             columns={{ xs: 4, sm: 8, md: 12 }}
         >
-            {images.map((item, index) => (
-                <>
+            {imagesSRC.map((item, index) => (
                 <Grid key={index} size={{ xs: 2, sm: 4, md: 4 }}>
                     <Box key={index} sx={{width: '100%'}}>
                         <ImageListItem key={index}>
@@ -30,9 +28,9 @@ export default function StandardImageList() {
                                 alt={`Image ${index + 1}`}
                                 loading="lazy"
                                 style={{
-                                    width: '100%', // Makes the image take the full width of the Grid item
-                                    height: 'auto', // Maintains the aspect ratio
-                                    maxHeight: '200px', // Ensures a minimum visible height (adjust as needed)
+                                    width: '100%',
+                                    height: 'auto', 
+                                    maxHeight: '200px',
                                     objectFit: 'contain'
                                 }}
                             />
@@ -41,7 +39,6 @@ export default function StandardImageList() {
                         <Button variant="outlined">Remover</Button>
                     </Box> 
                 </Grid>
-                </>
             ))}
         </Grid>
     }

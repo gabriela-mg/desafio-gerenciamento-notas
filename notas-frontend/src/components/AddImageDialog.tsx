@@ -5,10 +5,13 @@ import { ImageContext } from "../contexts/ImageContext";
 import { useAddImageMutation } from "../store/imageApi";
 import { useSelector } from "react-redux";
 import type { RootState } from "../store/store";
+import { useNavigate } from "react-router";
 
 export default function AddImageDialog() {
 
-    const { images, cleanImages } = useContext(ImageContext)
+    const { newImages, cleanInputImages } = useContext(ImageContext)
+    
+    const navigate = useNavigate()
     
     const note = useSelector((state: RootState) => state.notes.note)
 
@@ -21,22 +24,18 @@ export default function AddImageDialog() {
     }
 
     function handleCloseImage () {
-       setOpenImageInput(false)
-       cleanImages()
+        setOpenImageInput(false)
+        cleanInputImages()
+        navigate(0)
     }
 
     async function handleSubmit() {
-        console.log("1")
+        cleanInputImages()
         if(note && note.id) {
-            console.log("2")
             const id = note.id
-            if(images.length > 0) {     
-                console.log("3")       
-                await addImage({id, images})
-            }
+            addImage({id, images: newImages}).then(() => handleCloseImage())
         }
         
-        handleCloseImage();
     }
 
     return <>

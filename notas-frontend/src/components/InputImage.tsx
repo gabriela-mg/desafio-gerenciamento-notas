@@ -3,7 +3,7 @@ import { ImageContext } from "../contexts/ImageContext";
 
 
 function InputImage() {
-    const { changeImages } = useContext(ImageContext);
+    const { addNewImages } = useContext(ImageContext);
 
     function changeImage(event: React.ChangeEvent<HTMLInputElement>) {
         const selectedFiles = event.target.files; 
@@ -11,8 +11,7 @@ function InputImage() {
         if(selectedFiles) {
             for (let i = 0; i < selectedFiles.length; i++) {
                 const file = selectedFiles[i];
-                changeImages(file)
-                console.log(file)
+                addNewImages(file)
             }
         }
     }

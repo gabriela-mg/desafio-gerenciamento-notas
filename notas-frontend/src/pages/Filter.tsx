@@ -101,9 +101,7 @@ function Filter() {
                 <Button type="submit" onClick={ handleSubmit(filterNotes) } variant="outlined"> Filtrar </Button>
                 <Button type="submit" onClick={ cleanFilter } variant="outlined"> Limpar filtro </Button>
 
-                    <ImageProvider>
                         <NewNote/>
-                    </ImageProvider>
             </Grid>
 
             <br/>

@@ -1,20 +1,19 @@
-
 import { useParams } from 'react-router';
 import { Card, CardContent, Typography, Grid, ButtonGroup, Box } from '@mui/material';
 import EditNote from './EditNote';
 import { useLazyGetNoteByIdQuery } from '../store/noteApi';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../store/store';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import StandardImageList from '../components/StandardImageList';
 import { useLazyGetImagesQuery, useLazyGetOneImageQuery } from '../store/imageApi';
 import DeleteDialog from '../components/DeleteDialog';
 import AddImageDialog from '../components/AddImageDialog';
-import { ImageContext, ImageProvider } from '../contexts/ImageContext';
+import { ImageContext } from '../contexts/ImageContext';
 function NoteCard() {
 
     const params = useParams()
-    const { changeImages } = useContext(ImageContext)
+    const { changeImages, cleanImages } = useContext(ImageContext)
             
     const [triggerGetOne, { isFetching, isLoading, error }] = useLazyGetNoteByIdQuery()
     const [triggerGetImages] = useLazyGetImagesQuery()
@@ -27,7 +26,7 @@ function NoteCard() {
         const keys = answer.data
 
         if(keys && keys.length > 0 ) {
-            keys.map(async (key: string, index) => {
+            keys.map(async (key: string) => {
                 const image = await triggerGetOneImage(key)
                 if(image.data) {
                     changeImages(image.data)
@@ -37,6 +36,8 @@ function NoteCard() {
     }
 
     useEffect(() => {
+        console.log("oi")
+        cleanImages()
         if(params.id) {
             getNote(params.id)
         }
@@ -92,7 +93,7 @@ function NoteCard() {
                             {note.description}
                         </Typography>
                     </CardContent>
-                     <Grid container 
+                    <Grid container 
                         sx={{
                             justifyContent: "center",
                             alignItems: "center",
