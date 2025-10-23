@@ -9,6 +9,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import NewNote from "./NewNote";
 import dayjs from "dayjs";
 import { useLazyGetNotesQuery } from "../store/noteApi";
+import { ImageProvider } from "../contexts/ImageContext";
 
 function Filter() {
 
@@ -100,7 +101,9 @@ function Filter() {
                 <Button type="submit" onClick={ handleSubmit(filterNotes) } variant="outlined"> Filtrar </Button>
                 <Button type="submit" onClick={ cleanFilter } variant="outlined"> Limpar filtro </Button>
 
-                <NewNote></NewNote>
+                    <ImageProvider>
+                        <NewNote/>
+                    </ImageProvider>
             </Grid>
 
             <br/>

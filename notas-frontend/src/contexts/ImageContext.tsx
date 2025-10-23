@@ -16,7 +16,8 @@ const ImageProvider = ({ children }: ImageProviderProps) => {
     const [images, setImages]= useState<File[]>([])
 
     const changeImages = (image: File) => {
-        images.push(image) 
+        console.log("oi")
+        setImages((prevImages) => [...prevImages, image]) 
     }
 
     const cleanImages = () => setImages([])

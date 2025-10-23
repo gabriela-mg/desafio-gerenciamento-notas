@@ -5,21 +5,20 @@ import EditNote from './EditNote';
 import { useLazyGetNoteByIdQuery } from '../store/noteApi';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../store/store';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import StandardImageList from '../components/StandardImageList';
 import { useLazyGetImagesQuery, useLazyGetOneImageQuery } from '../store/imageApi';
 import DeleteDialog from '../components/DeleteDialog';
 import AddImageDialog from '../components/AddImageDialog';
-import { ImageProvider } from '../contexts/ImageContext';
+import { ImageContext, ImageProvider } from '../contexts/ImageContext';
 function NoteCard() {
 
     const params = useParams()
+    const { changeImages } = useContext(ImageContext)
             
     const [triggerGetOne, { isFetching, isLoading, error }] = useLazyGetNoteByIdQuery()
     const [triggerGetImages] = useLazyGetImagesQuery()
     const [triggerGetOneImage] = useLazyGetOneImageQuery()
-    const [images] = useState<File[]>( [])
-
     const note = useSelector((state: RootState) => state.notes.note)
 
     async function getNote(id: string) {
@@ -28,9 +27,11 @@ function NoteCard() {
         const keys = answer.data
 
         if(keys && keys.length > 0 ) {
-            keys.map(async (key: string) => {
+            keys.map(async (key: string, index) => {
                 const image = await triggerGetOneImage(key)
-                if(image.data) images.push(image.data)
+                if(image.data) {
+                    changeImages(image.data)
+                }
             })
         }
     }
@@ -40,7 +41,7 @@ function NoteCard() {
             getNote(params.id)
         }
         
-    },[] )
+    }, [] )
 
     if (!note) {
         return "carregando"
@@ -78,11 +79,8 @@ function NoteCard() {
                             </Typography>
                             <ButtonGroup variant="outlined" >
                                 <EditNote/>
-                                <ImageProvider>
-                                    <DeleteDialog/>
-                                    <AddImageDialog/>
-                                </ImageProvider>
-                                
+                                <DeleteDialog/>
+                                <AddImageDialog/>
                             </ButtonGroup>
                         </Box>
                     </CardContent>
@@ -101,7 +99,7 @@ function NoteCard() {
                         }}
                     >  
                         <CardContent  sx={{display: 'center'}}>
-                            <StandardImageList images={images}/>
+                            <StandardImageList/>
                         </CardContent>
                     </Grid>
                 </Card>

@@ -6,14 +6,12 @@ import { ImageProvider } from '../contexts/ImageContext.tsx';
 function Home() {
     
     return <>
-    <ImageProvider>
         <Typography variant='h2'>Suas notas</Typography>
-        
+        <ImageProvider>
         <Filter/>
-        <NoteList/>
-    </ImageProvider>
+        </ImageProvider>
         
-
+        <NoteList/>     
     </>
 }
 

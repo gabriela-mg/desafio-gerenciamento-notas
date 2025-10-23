@@ -5,18 +5,28 @@ import type { Note } from '../type/Note';
 import { makeFrontNoteRoute } from '../routes/constRoutes';
 import { useSelector } from 'react-redux';
 import { type RootState } from '../store/store';
-import { useGetNotesQuery } from '../store/noteApi';
+import { useGetNotesQuery, useLazyGetNotesQuery } from '../store/noteApi';
+import { useContext, useEffect } from 'react';
+import { ImageContext } from '../contexts/ImageContext';
 
 function NoteList() {
 
-    useGetNotesQuery(undefined)
+    const { cleanImages } = useContext(ImageContext)
+
     const notes = useSelector((state: RootState) => state.notes.notes)
+
+    const [getNotes] = useLazyGetNotesQuery()
 
     function formatDate(data: string) {
         const newDate = new Date(data)
         const formattedDate = newDate.toLocaleDateString()
         return formattedDate
     }
+
+    useEffect(() => {
+        getNotes(undefined)
+        cleanImages()
+    }, [])
     
     return(
         <>
