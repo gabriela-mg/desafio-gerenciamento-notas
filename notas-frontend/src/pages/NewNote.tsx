@@ -3,7 +3,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useContext, useState } from 'react';
-import { InputLabel, TextField } from '@mui/material';
+import { Box, ButtonGroup, Grid, InputLabel, TextField } from '@mui/material';
 import { useForm } from "react-hook-form";
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { NotePostForm } from '../schema/notePostSchema';
@@ -36,12 +36,12 @@ export default function NewNote() {
     };
 
     const onSubmit = async (data: {title: string, description: string}) => {
-        const answer = await addNote(data)
-        const id = answer.data?.id
-        if(newImages.length > 0) {            
-            await addImage({id, images: newImages})
-        }
-        
+        addNote(data).then(async (res) => {
+            const id = res.data?.id
+            if(newImages.length > 0) {            
+                await addImage({id, images: newImages})
+            }
+        })
         handleClose();
     }
 
@@ -75,9 +75,11 @@ export default function NewNote() {
                         multiline
                         {...register("description", {required: true})}
                     />
-                <InputImage />
-                    <Button type="submit"> Criar </Button>
-                    <Button onClick={handleClose}> Cancelar </Button>
+                    <InputImage />
+                    <ButtonGroup>
+                        <Button type="submit"> Criar </Button>
+                        <Button onClick={handleClose}> Cancelar </Button>
+                    </ButtonGroup>                   
                 </form>          
             </DialogContent>
             
