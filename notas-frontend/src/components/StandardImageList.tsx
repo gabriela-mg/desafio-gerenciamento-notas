@@ -36,7 +36,9 @@ export default function StandardImageList() {
                             />
                             <br/>
                         </ImageListItem>
-                        <Button variant="outlined">Remover</Button>
+                         <Box sx={{justifyContent: 'center', alignContent: 'center', display: 'flex',}}>
+                        
+                        <Button variant="outlined">Remover</Button> </Box>
                     </Box> 
                 </Grid>
             ))}

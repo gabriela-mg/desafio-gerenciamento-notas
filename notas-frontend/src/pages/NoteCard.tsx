@@ -1,5 +1,5 @@
-import { useParams } from 'react-router';
-import { Card, CardContent, Typography, Grid, ButtonGroup, Box } from '@mui/material';
+import { useNavigate, useParams } from 'react-router';
+import { Card, CardContent, Typography, Grid, ButtonGroup, Box, IconButton } from '@mui/material';
 import EditNote from './EditNote';
 import { useLazyGetNoteByIdQuery } from '../store/noteApi';
 import { useSelector } from 'react-redux';
@@ -10,10 +10,17 @@ import { useLazyGetImagesQuery, useLazyGetOneImageQuery } from '../store/imageAp
 import DeleteDialog from '../components/DeleteDialog';
 import AddImageDialog from '../components/AddImageDialog';
 import { ImageContext } from '../contexts/ImageContext';
+import HomeIcon from '@mui/icons-material/Home';
+import { theme } from '../theme/theme';
+
+
 function NoteCard() {
 
     const params = useParams()
+
     const { changeImages, cleanImages } = useContext(ImageContext)
+
+    const navigate = useNavigate()
             
     const [triggerGetOne, { isFetching, isLoading, error }] = useLazyGetNoteByIdQuery()
     const [triggerGetImages] = useLazyGetImagesQuery()
@@ -35,8 +42,11 @@ function NoteCard() {
         }
     }
 
+    function goHome() {
+        navigate("/")
+    }
+
     useEffect(() => {
-        console.log("oi")
         cleanImages()
         if(params.id) {
             getNote(params.id)
@@ -59,14 +69,16 @@ function NoteCard() {
 
     return(  
         <>
+        <Box style={{backgroundColor: theme.palette.secondary.dark}} height={'100vh'}>
             <Grid container 
                 sx={{
                     justifyContent: "center",
                     alignItems: "center",
                 }}
+                bgcolor={theme.palette.secondary.dark} 
             >  
-                <Card sx={{width: '80%'}}>
-                    <CardContent>
+                <Card sx={{width: '90%'}} style={{backgroundColor: theme.palette.secondary.light}}>
+                    <CardContent > 
                         <Box 
                             sx={{ 
                                 display: 'flex', 
@@ -75,18 +87,31 @@ function NoteCard() {
                                 width: '100%' 
                             }}
                         >
-                            <Typography variant='h4'>
-                                {note.title}
-                            </Typography>
-                            <ButtonGroup variant="outlined" >
+                            <IconButton onClick={goHome}>
+                                <HomeIcon fontSize="large" sx={{color: theme.palette.secondary.dark}}/>
+                            </IconButton>
+                            <ButtonGroup>
                                 <EditNote/>
                                 <DeleteDialog/>
                                 <AddImageDialog/>
                             </ButtonGroup>
                         </Box>
                     </CardContent>
+                        <Box 
+                            sx={{
+                                justifyContent: 'center', 
+                                alignContent: 'center', 
+                                display: 'flex',
+                                borderBottom: 2, borderTop: 2
+                            }}
+                            padding = {'1%'}
+                        >
+                            <Typography variant='h4' fontWeight={'bold'}>
+                                {note.title}
+                            </Typography>
+                        </Box>
                     <CardContent>
-                        <Typography variant='h5'> 
+                        <Typography variant='h5' fontWeight={'bold'}> 
                             Descrição:
                         </Typography>
                         <Typography sx={{overflow: 'hidden',  whiteSpace: 'pre-line' }}>
@@ -105,6 +130,7 @@ function NoteCard() {
                     </Grid>
                 </Card>
             </Grid>   
+            </Box>
         </>
     )
 }
