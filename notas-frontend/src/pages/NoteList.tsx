@@ -5,7 +5,7 @@ import type { Note } from '../type/Note';
 import { makeFrontNoteRoute } from '../routes/constRoutes';
 import { useSelector } from 'react-redux';
 import { type RootState } from '../store/store';
-import { useGetNotesQuery, useLazyGetNotesQuery } from '../store/noteApi';
+import { useLazyGetNotesQuery } from '../store/noteApi';
 import { useContext, useEffect } from 'react';
 import { ImageContext } from '../contexts/ImageContext';
 
@@ -53,7 +53,8 @@ function NoteList() {
                                                 display: 'flex', 
                                                 justifyContent: 'space-between', 
                                                 alignItems: 'center', 
-                                                width: '100%' 
+                                                width: '100%',
+                                                borderBottom: 2
                                             }}
                                         >
                                             <Typography fontWeight={'bold'}>

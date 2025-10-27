@@ -3,7 +3,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useContext, useState } from 'react';
-import { Box, ButtonGroup, Grid, InputLabel, TextField } from '@mui/material';
+import { ButtonGroup, InputLabel, TextField } from '@mui/material';
 import { useForm } from "react-hook-form";
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { NotePostForm } from '../schema/notePostSchema';
