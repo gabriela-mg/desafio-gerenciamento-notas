@@ -38,6 +38,13 @@ export const theme = createTheme({
                 },
             },
         },
+        MuiDialog: {
+            styleOverrides: {
+                root: {
+                    backgroundColor: "#aa9191ff"
+                }
+            }
+        },   
     }
 })
 

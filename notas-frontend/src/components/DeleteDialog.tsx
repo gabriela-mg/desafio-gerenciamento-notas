@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogContent, DialogTitle, Typography } from "@mui/material";
+import { Button, ButtonGroup, Dialog, DialogContent, DialogTitle, Typography } from "@mui/material";
 import { useState } from "react";
 import { useDeleteNoteMutation } from "../store/noteApi";
 import { useNavigate } from "react-router";
@@ -42,9 +42,11 @@ export default function DeleteDialog() {
         <Dialog open={openDeleteDialog} onClose={handleCloseDelete} sx={{ width: '100%'}} fullWidth={true}>
             <DialogTitle>REMOVER NOTA</DialogTitle>
             <DialogContent>
-                <Typography> Deseja mesmo excluir a nota? </Typography>
-                <Button onClick={onDeleteNote}> REMOVER </Button>
-                <Button onClick={handleCloseDelete}> CANCELAR </Button>
+                <Typography paddingBottom={'2%'}> Deseja mesmo excluir a nota? </Typography>
+                <ButtonGroup>
+                    <Button onClick={onDeleteNote}> REMOVER </Button>
+                    <Button onClick={handleCloseDelete}> CANCELAR </Button>
+                </ButtonGroup>   
             </DialogContent>
         </Dialog>
     </>

@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogContent, DialogTitle, Typography } from "@mui/material";
+import { Button, ButtonGroup, Dialog, DialogContent, DialogTitle, Typography } from "@mui/material";
 import InputImage from "./InputImage";
 import { useContext, useState } from "react";
 import { ImageContext } from "../contexts/ImageContext";
@@ -48,8 +48,10 @@ export default function AddImageDialog() {
             <DialogTitle>ADICIONAR IMAGEM</DialogTitle>
             <DialogContent>
                 <InputImage/>
-                <Button onClick={handleSubmit}>SALVAR</Button>
-                <Button onClick={handleCloseImage}> CANCELAR </Button>
+                <ButtonGroup>
+                    <Button onClick={handleSubmit}>SALVAR</Button>
+                    <Button onClick={handleCloseImage}> CANCELAR </Button> 
+                </ButtonGroup>                
             </DialogContent>
         </Dialog>
     </>

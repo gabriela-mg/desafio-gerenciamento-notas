@@ -24,7 +24,6 @@ function InputImage() {
             onChange={changeImage}
             multiple
         />
-        <br/>
     </>
 
 }

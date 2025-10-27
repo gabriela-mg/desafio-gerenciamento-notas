@@ -8,7 +8,7 @@ function Home() {
     return <>
         <Box
             color={theme.palette.primary.contrastText} 
-            bgcolor={theme.palette.primary.dark}
+            bgcolor={theme.palette.secondary.dark}
             justifyContent={'center'}
             justifyItems={'center'}
         >
@@ -17,7 +17,7 @@ function Home() {
             </Typography>
         </Box>
         <Box 
-            bgcolor={theme.palette.primary.light} 
+            bgcolor={theme.palette.background.default} 
             padding={"2% 5% 2% 5%"} 
         >
             <Filter/>        
