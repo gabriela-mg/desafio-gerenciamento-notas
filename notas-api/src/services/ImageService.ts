@@ -57,13 +57,21 @@ export class ImageService {
     }
 
     public async deleteImage(id: string) {
-        
+        const image = await this.imageRepo.findImagebyKey(id)
+        this.fileStore.delete(image.address).then(async (res) => {
+            if(res) {
+                this.imageRepo.deleteImage(image).then(() => {
+                    return true
+                }).catch(() => {
+                    return false
+                })
+            }
+        }).catch(() => {return false})
     }
 
     private generateKey(noteId: string, mimeType: string) {
         const type = mimeType.substring(6)
 
-        console.log(type)
         const key = "note/" + noteId + "/" + nanoid() + "." + type
         return key
     }

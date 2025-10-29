@@ -40,7 +40,10 @@ export class ImageRepostitory {
         return newImage
     }
 
-    public async deleteImage(id: number) {
+    public async deleteImage(image: ImageEntity) {
+       const answer = await this.imageRepository.delete(image)
+
+       return answer
        
     }
 } 

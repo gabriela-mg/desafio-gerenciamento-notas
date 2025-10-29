@@ -1,7 +1,6 @@
 import { Request, Response } from 'express'
 import { ImageService } from '../services/ImageService';
 import * as busboy from 'busboy'
-import * as fileType from 'file-type'
 
 export class ImageController {
 
@@ -23,7 +22,7 @@ export class ImageController {
     public getOneImage = async (req: Request, res: Response) => {
         try {
             const image = await this.imageService.selectOneImage(req.params.idImage)
-            res.contentType("image/png");
+
             image.on('error', (err) => {
                 console.error('Stream error:', err);
                 if (!res.headersSent) {
@@ -72,6 +71,7 @@ export class ImageController {
 
 
     public deleteImage = async (req: Request, res: Response) => {
-
+        const answer = this.imageService.deleteImage(req.params.idImage)
+        return answer
     }
 }
