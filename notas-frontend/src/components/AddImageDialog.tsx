@@ -32,7 +32,7 @@ export default function AddImageDialog() {
     async function handleSubmit() {
         cleanInputImages()
         if(note && note.id) {
-            const id = note.id
+            const id = note.id.toString()
             addImage({id, images: newImages}).then(() => handleCloseImage())
         }
         

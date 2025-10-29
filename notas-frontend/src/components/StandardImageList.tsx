@@ -2,11 +2,30 @@ import { Box, Button, Grid } from '@mui/material';
 import ImageListItem from '@mui/material/ImageListItem';
 import { useContext } from 'react';
 import { ImageContext } from '../contexts/ImageContext';
+import { useDeleteImageMutation } from '../store/imageApi';
 
 export default function StandardImageList() {  
 
     const { noteImages } = useContext(ImageContext)
     const imagesSRC = noteImages.map((image) => URL.createObjectURL(image))
+
+    function getFileName(index: number) {
+        try {
+            return noteImages[index].name
+        } catch(err) {
+            console.log(err)
+        }
+
+    }
+
+    const [deleteImage] = useDeleteImageMutation()
+
+    async function handleImageDelete(index: number) {
+        const key = getFileName(index)
+        if(key) {
+            await deleteImage(key)
+        }
+    }
 
     return (
     <>
@@ -38,7 +57,7 @@ export default function StandardImageList() {
                         </ImageListItem>
                          <Box sx={{justifyContent: 'center', alignContent: 'center', display: 'flex',}}>
                         
-                        <Button variant="outlined">Remover</Button> </Box>
+                        <Button variant="outlined" onClick={() => handleImageDelete(index)}>Remover</Button> </Box>
                     </Box> 
                 </Grid>
             ))}

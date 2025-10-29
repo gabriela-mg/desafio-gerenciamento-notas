@@ -35,19 +35,22 @@ export const imageApi = createApi({
             query: (id) => ({ 
                 url: `/${id}` , 
                 method: 'get',
-                responseHandler: async (response) =>
-                    await response.blob(),
-                }),
+                responseHandler: async (response) => {
+                    const imageBlob = await response.blob()
+                    const imageKey = await response.url.substring(26)
+                    const image = new File([imageBlob], imageKey)
+                    return image
+                }
+            }),
         }),
-        /*deleteImage: builder.mutation<{ success: boolean; id: number }, number>({
-            query(id) {
+        deleteImage: builder.mutation<boolean, string>({
+            query(key) {
                 return {
-                    url: `/${id}`,
+                    url: `/${key}`,
                     method: 'DELETE',
                 }
             },
-            invalidatesTags: ['Notes']
-        }),*/
+        }),
     }),
 })
 
@@ -55,5 +58,6 @@ export const {
     useGetImagesQuery,
     useLazyGetImagesQuery,
     useAddImageMutation,
-    useLazyGetOneImageQuery
+    useLazyGetOneImageQuery,
+    useDeleteImageMutation
 } = imageApi

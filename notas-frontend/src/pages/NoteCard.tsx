@@ -25,6 +25,7 @@ function NoteCard() {
     const [triggerGetOne, { isFetching, isLoading, error }] = useLazyGetNoteByIdQuery()
     const [triggerGetImages] = useLazyGetImagesQuery()
     const [triggerGetOneImage] = useLazyGetOneImageQuery()
+    
     const note = useSelector((state: RootState) => state.notes.note)
 
     async function getNote(id: string) {
